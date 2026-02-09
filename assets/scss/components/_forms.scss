@@ -1,0 +1,69 @@
+// Form components
+.form-group {
+  margin-bottom: $spacing-unit * 1.5;
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: $dark-gray;
+  }
+
+  &__control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid $medium-gray;
+    border-radius: $border-radius;
+    font-size: $font-size-base;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 2px rgba($primary-blue, 0.2);
+    }
+  }
+
+  &__help {
+    font-size: 0.875rem;
+    color: $dark-gray;
+    margin-top: 0.25rem;
+  }
+}
+
+// Input variations
+.input--success {
+  border-color: $accent-green;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($accent-green, 0.2);
+  }
+}
+
+.input--error {
+  border-color: $accent-orange;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($accent-orange, 0.2);
+  }
+}
+
+// Select component
+.select {
+  position: relative;
+
+  &__control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2rem;
+  }
+}
+
+// Textarea component
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}

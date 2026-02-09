@@ -1,0 +1,160 @@
+// Responsive layout
+.main-content {
+  flex: 1;
+  padding: $spacing-unit * 2;
+  overflow-y: auto;
+}
+
+// Small phones (320px)
+@include breakpoint-up(sm) {
+  .header__title {
+    font-size: 1rem;
+  }
+
+  .header__user-info {
+    display: none;
+  }
+
+  .header__burger {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    padding: $spacing-unit;
+  }
+
+  // Mobile navigation
+  .mobile-nav {
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $white;
+    border-top: 1px solid $medium-gray;
+    padding: 0.5rem 0;
+    z-index: 1000;
+
+    &__link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: $dark-gray;
+      text-decoration: none;
+      padding: 0.5rem;
+
+      &--active {
+        color: $primary-blue;
+      }
+    }
+
+    &__icon {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    &__text {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// Standard phones (375px)
+@include breakpoint-up(md) {
+  .header__title {
+    font-size: 1.125rem;
+  }
+
+  .header__user-info {
+    display: none;
+  }
+
+  .main-content {
+    padding: $spacing-unit * 1.25;
+  }
+}
+
+// Larger phones (425px)
+@include breakpoint-up(lg) {
+  .header__title {
+    font-size: 1.125rem;
+  }
+
+  .header__user-info {
+    display: flex;
+  }
+
+  .header__burger {
+    display: none;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    padding: $spacing-unit * 1.5;
+  }
+}
+
+// Tablets (768px)
+@include breakpoint-up(xl) {
+  .header__title {
+    font-size: 1.25rem;
+  }
+
+  .sidebar {
+    display: block;
+    width: 200px;
+  }
+
+  .main-content {
+    padding: $spacing-unit * 1.5;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+}
+
+// Small desktops (1024px)
+@include breakpoint-up(xxl) {
+  .sidebar {
+    width: 250px;
+  }
+
+  .main-content {
+    padding: $spacing-unit * 2;
+  }
+}
+
+// Large desktops (1200px+)
+@include breakpoint-up(xxxl) {
+  .main-content {
+    padding: $spacing-unit * 3;
+  }
+}
+
+// Card grid for mobile
+@include breakpoint-up(sm) {
+  .card {
+    margin-bottom: $spacing-unit * 1.5;
+  }
+
+  .status-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+// Header adjustments for larger screens
+@include breakpoint-up(xl) {
+  .header__right {
+    gap: $spacing-unit * 1.5;
+  }
+}

@@ -1,0 +1,56 @@
+// Sidebar component
+.sidebar {
+  width: 250px;
+  background-color: $white;
+  border-right: 1px solid $medium-gray;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+  position: sticky;
+  top: 70px;
+
+  &__nav {
+    padding: $spacing-unit;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__item {
+    margin-bottom: 0.5rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: $border-radius;
+    color: $dark-gray;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $light-blue;
+      color: $primary-blue;
+    }
+
+    &--active {
+      background-color: $primary-blue;
+      color: $white;
+
+      .sidebar__icon {
+        color: $white;
+      }
+    }
+  }
+
+  &__icon {
+    margin-right: $spacing-unit;
+    font-size: 1.2rem;
+    color: $primary-blue;
+  }
+
+  &__text {
+    font-weight: 500;
+  }
+}

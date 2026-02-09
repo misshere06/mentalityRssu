@@ -1,0 +1,35 @@
+// Table component
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: $spacing-unit * 2;
+
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid $medium-gray;
+  }
+
+  th {
+    background-color: $light-blue;
+    color: $primary-blue;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: rgba($primary-blue, 0.05);
+  }
+}
+
+// Table responsive wrapper
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// Button sizes
+.btn--small {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}

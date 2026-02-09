@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Психологический мониторинг РГСУ</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header__container">
+        <div class="header__left">
+          <button class="header__burger">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="header__logo">
+            <img src="assets/images/rgsu-logo.png" alt="РГСУ Логотип" class="header__logo-img">
+            <span class="header__title">Психологический мониторинг студентов</span>
+          </div>
+        </div>
+        <div class="header__right">
+          <div class="header__notifications">
+            <i class="bi bi-bell header__notification-icon"></i>
+            <span class="header__notification-badge">3</span>
+          </div>
+          <div class="header__user" onclick="toggleProfileMenu()">
+            <div class="header__avatar">ИИ</div>
+            <div class="header__user-info">
+              <span class="header__user-name">Иванов Иван</span>
+              <div class="header__user-role">Студент</div>
+            </div>
+          </div>
+          <div class="header__profile-menu" id="profileMenu">
+            <div class="header__profile-item">
+              <i class="bi bi-person-fill mr-2"></i>
+              <a href="#">Мой профиль</a>
+            </div>
+            <div class="header__profile-item">
+              <i class="bi bi-gear-fill mr-2"></i>
+              <a href="#">Настройки</a>
+            </div>
+            <div class="header__profile-item">
+              <i class="bi bi-envelope-fill mr-2"></i>
+              <a href="#">Сообщения</a>
+            </div>
+            <div class="header__profile-item">
+              <i class="bi bi-box-arrow-right mr-2"></i>
+              <a href="#">Выйти</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="app__main">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar__nav">
+          <ul class="sidebar__list">
+            <li class="sidebar__item">
+              <a href="#" class="sidebar__link sidebar__link--active">
+                <i class="bi bi-person-fill sidebar__icon"></i>
+                <span class="sidebar__text">Профиль</span>
+              </a>
+            </li>
+            <li class="sidebar__item">
+              <a href="#" class="sidebar__link">
+                <i class="bi bi-clipboard-data sidebar__icon"></i>
+                <span class="sidebar__text">Мои тесты</span>
+              </a>
+            </li>
+            <li class="sidebar__item">
+              <a href="#" class="sidebar__link">
+                <i class="bi bi-heart-pulse sidebar__icon"></i>
+                <span class="sidebar__text">Психологическое состояние</span>
+              </a>
+            </li>
+            <li class="sidebar__item">
+              <a href="#" class="sidebar__link">
+                <i class="bi bi-life-preserver sidebar__icon"></i>
+                <span class="sidebar__text">Помощь студентам</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Student Profile Section -->
+        <section class="student-profile">
+          <div class="card">
+            <div class="card__header">
+              <h2 class="card__title">Мой профиль</h2>
+            </div>
+            <div class="card__body">
+              <div class="profile-info">
+                <div class="profile-info__row">
+                  <div class="profile-info__label">ФИО:</div>
+                  <div class="profile-info__value">Иванов Иван Иванович</div>
+                </div>
+                <div class="profile-info__row">
+                  <div class="profile-info__label">Факультет:</div>
+                  <div class="profile-info__value">Психологии и социальной работы</div>
+                </div>
+                <div class="profile-info__row">
+                  <div class="profile-info__label">Курс:</div>
+                  <div class="profile-info__value">2 курс</div>
+                </div>
+                <div class="profile-info__row">
+                  <div class="profile-info__label">Текущее состояние:</div>
+                  <div class="profile-info__value">
+                    <span class="status-badge status-badge--stable">Стабильное</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn--primary mt-3">Обновить статус</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Psychological Tests Section -->
+        <section class="tests-section">
+          <div class="card">
+            <div class="card__header">
+              <h2 class="card__title">Мои тесты</h2>
+            </div>
+            <div class="card__body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Название теста</th>
+                      <th>Дата прохождения</th>
+                      <th>Результат</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Тест на тревожность</td>
+                      <td>15.09.2026</td>
+                      <td><span class="status-badge status-badge--success">Низкий уровень</span></td>
+                      <td><button class="btn btn--secondary btn--small">Детали</button></td>
+                    </tr>
+                    <tr>
+                      <td>Опросник депрессии</td>
+                      <td>10.09.2026</td>
+                      <td><span class="status-badge status-badge--warning">Умеренный уровень</span></td>
+                      <td><button class="btn btn--secondary btn--small">Детали</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Psychological Status Section -->
+        <section class="status-section">
+          <div class="card">
+            <div class="card__header">
+              <h2 class="card__title">Психологическое состояние</h2>
+            </div>
+            <div class="card__body">
+              <div class="status-form">
+                <h3 class="status-form__title">Выберите текущее состояние:</h3>
+                <div class="status-options">
+                  <label class="status-option">
+                    <input type="radio" name="status" value="stable" checked>
+                    <span class="status-option__label">Стабильное</span>
+                  </label>
+                  <label class="status-option">
+                    <input type="radio" name="status" value="anxious">
+                    <span class="status-option__label">Тревожное</span>
+                  </label>
+                  <label class="status-option">
+                    <input type="radio" name="status" value="depressed">
+                    <span class="status-option__label">Подавленное</span>
+                  </label>
+                  <label class="status-option">
+                    <input type="radio" name="status" value="help-needed">
+                    <span class="status-option__label">Требуется помощь</span>
+                  </label>
+                </div>
+
+                <div class="status-visual mt-3">
+                  <div class="progress-bar">
+                    <div class="progress-bar__fill" style="width: 75%;"></div>
+                  </div>
+                  <div class="status-emoji">😊</div>
+                </div>
+
+                <button class="btn btn--primary mt-3">Сохранить состояние</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+      <a href="#" class="mobile-nav__link mobile-nav__link--active">
+        <i class="bi bi-person-fill mobile-nav__icon"></i>
+        <span class="mobile-nav__text">Профиль</span>
+      </a>
+      <a href="#" class="mobile-nav__link">
+        <i class="bi bi-clipboard-data mobile-nav__icon"></i>
+        <span class="mobile-nav__text">Тесты</span>
+      </a>
+      <a href="#" class="mobile-nav__link">
+        <i class="bi bi-heart-pulse mobile-nav__icon"></i>
+        <span class="mobile-nav__text">Состояние</span>
+      </a>
+      <a href="#" class="mobile-nav__link">
+        <i class="bi bi-life-preserver mobile-nav__icon"></i>
+        <span class="mobile-nav__text">Помощь</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+// Main SCSS file - imports all components
+@import 'components/variables';
+@import 'components/mixins';
+@import 'components/base';
+@import 'components/header';
+@import 'components/sidebar';
+@import 'components/cards';
+@import 'components/tables';
+@import 'components/forms';
+@import 'components/charts';
+@import 'components/widgets';
+@import 'components/responsive';
+@import 'components/utilities';

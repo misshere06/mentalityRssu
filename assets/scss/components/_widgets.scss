@@ -1,0 +1,125 @@
+// Widget components
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-unit * 1.5;
+  margin-bottom: $spacing-unit * 2;
+}
+
+.widget {
+  @include card-style;
+  padding: $spacing-unit * 1.5;
+  display: flex;
+  align-items: center;
+  gap: $spacing-unit;
+  @include depth(2);
+
+  &__icon {
+    @include flex-center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: $white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__title {
+    font-size: 0.875rem;
+    color: $dark-gray;
+    margin-bottom: 0.25rem;
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $primary-blue;
+    margin-bottom: 0.25rem;
+  }
+
+  &__change {
+    font-size: 0.75rem;
+  }
+}
+
+// News ticker
+.news-ticker {
+  background-color: $light-blue;
+  padding: 0.5rem $spacing-unit;
+  border-radius: $border-radius;
+  overflow: hidden;
+  margin-left: $spacing-unit;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit;
+    animation: scroll 20s linear infinite;
+  }
+
+  &__label {
+    font-weight: 600;
+    color: $primary-blue;
+    white-space: nowrap;
+  }
+
+  &__item {
+    white-space: nowrap;
+    color: $dark-gray;
+    font-size: 0.875rem;
+    margin-right: $spacing-unit * 2;
+  }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+// Mobile menu styles
+.sidebar--open {
+  display: block !important;
+}
+
+.mobile-nav--open {
+  display: none !important;
+}
+
+// Profile menu styles
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+// Text colors
+.text-success {
+  color: $accent-green;
+}
+
+.text-danger {
+  color: $accent-orange;
+}
+
+.text-info {
+  color: $primary-blue;
+}
+
+// Background colors
+.bg-primary {
+  background-color: $primary-blue;
+}
+
+.bg-success {
+  background-color: $accent-green;
+}
+
+.bg-warning {
+  background-color: $accent-orange;
+}
+
+.bg-info {
+  background-color: $secondary-blue;
+}

@@ -1,0 +1,101 @@
+// Chart components
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin-bottom: $spacing-unit * 2;
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  color: $primary-blue;
+  margin-bottom: $spacing-unit;
+  text-align: center;
+}
+
+// Simple bar chart (CSS-only)
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  height: 200px;
+  gap: $spacing-unit;
+  margin-top: $spacing-unit;
+
+  &__bar {
+    flex: 1;
+    background-color: $primary-blue;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s ease;
+    position: relative;
+  }
+
+  &__label {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  &__value {
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+// Pie chart (CSS-only)
+.pie-chart {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    $accent-green 0% 30%,
+    $accent-orange 30% 50%,
+    $dark-gray 50% 70%,
+    $primary-blue 70% 100%
+  );
+  margin: 0 auto;
+  position: relative;
+
+  &__center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    background: $white;
+    border-radius: 50%;
+    @include flex-center;
+    font-weight: 600;
+  }
+}
+
+// Legend
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: $spacing-unit * 2;
+  margin-top: $spacing-unit;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__color {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+  }
+}
