@@ -17,8 +17,8 @@ Thumbs.db
 # Build files
 dist/
 build/
-assets/css/
-assets/js/
+assets/css/main.css
+assets/css/main.css.map
 
 # Logs
 logs

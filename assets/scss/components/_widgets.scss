@@ -1,27 +1,60 @@
-// Widget components
-.widget-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: $spacing-unit * 1.5;
-  margin-bottom: $spacing-unit * 2;
+// Widget styles
+.widget {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $primary-blue;
+  }
+
+  &__body {
+    color: $dark-gray;
+  }
+
+  &__footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid $light-gray;
+  }
 }
 
-.widget {
-  @include card-style;
-  padding: $spacing-unit * 1.5;
+// Quick stats widget
+.quick-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+// Info widget
+.info-widget {
   display: flex;
   align-items: center;
-  gap: $spacing-unit;
-  @include depth(2);
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba($primary-blue, 0.05);
+  border-radius: $border-radius;
 
   &__icon {
-    @include flex-center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: $white;
-    font-size: 1.5rem;
-    flex-shrink: 0;
+    font-size: 2rem;
+    color: $primary-blue;
   }
 
   &__content {
@@ -29,97 +62,12 @@
   }
 
   &__title {
-    font-size: 0.875rem;
-    color: $dark-gray;
+    font-weight: 600;
     margin-bottom: 0.25rem;
   }
 
-  &__value {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: $primary-blue;
-    margin-bottom: 0.25rem;
-  }
-
-  &__change {
-    font-size: 0.75rem;
-  }
-}
-
-// News ticker
-.news-ticker {
-  background-color: $light-blue;
-  padding: 0.5rem $spacing-unit;
-  border-radius: $border-radius;
-  overflow: hidden;
-  margin-left: $spacing-unit;
-
-  &__content {
-    display: flex;
-    align-items: center;
-    gap: $spacing-unit;
-    animation: scroll 20s linear infinite;
-  }
-
-  &__label {
-    font-weight: 600;
-    color: $primary-blue;
-    white-space: nowrap;
-  }
-
-  &__item {
-    white-space: nowrap;
-    color: $dark-gray;
+  &__description {
     font-size: 0.875rem;
-    margin-right: $spacing-unit * 2;
+    color: $medium-gray;
   }
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-// Mobile menu styles
-.sidebar--open {
-  display: block !important;
-}
-
-.mobile-nav--open {
-  display: none !important;
-}
-
-// Profile menu styles
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
-// Text colors
-.text-success {
-  color: $accent-green;
-}
-
-.text-danger {
-  color: $accent-orange;
-}
-
-.text-info {
-  color: $primary-blue;
-}
-
-// Background colors
-.bg-primary {
-  background-color: $primary-blue;
-}
-
-.bg-success {
-  background-color: $accent-green;
-}
-
-.bg-warning {
-  background-color: $accent-orange;
-}
-
-.bg-info {
-  background-color: $secondary-blue;
 }

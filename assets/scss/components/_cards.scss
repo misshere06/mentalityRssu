@@ -1,125 +1,76 @@
-// Card component
+// Card styles
 .card {
-  @include card-style;
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: $spacing-unit * 1.5;
-    padding-bottom: $spacing-unit;
-    border-bottom: 1px solid $medium-gray;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $light-gray;
   }
 
   &__title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: $primary-blue;
-    margin: 0;
   }
 
   &__body {
-    padding: $spacing-unit 0;
-  }
-}
-
-// Profile info component
-.profile-info {
-  &__row {
-    display: flex;
-    margin-bottom: $spacing-unit;
-  }
-
-  &__label {
-    width: 150px;
-    font-weight: 500;
     color: $dark-gray;
   }
 
-  &__value {
-    flex: 1;
+  &__footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid $light-gray;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
-// Status badge component
-.status-badge {
-  &--stable {
-    @include status-badge($accent-green);
-  }
-
-  &--anxious {
-    @include status-badge($accent-orange);
-  }
-
-  &--depressed {
-    @include status-badge($dark-gray);
-  }
-
-  &--success {
-    @include status-badge($accent-green);
-  }
-
-  &--warning {
-    @include status-badge($accent-orange);
-  }
-}
-
-// Status form component
-.status-form {
-  &__title {
-    font-size: 1.25rem;
-    margin-bottom: $spacing-unit * 1.5;
-    color: $primary-blue;
-  }
-}
-
-.status-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $spacing-unit;
-  margin-bottom: $spacing-unit * 1.5;
-}
-
-.status-option {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  border: 1px solid $medium-gray;
+// Stat card
+.stat-card {
+  background-color: $white;
   border-radius: $border-radius;
-  cursor: pointer;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
   transition: all 0.2s ease;
 
-  input[type="radio"] {
-    margin-right: 0.5rem;
+  &__value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $primary-blue;
+    margin-bottom: 0.5rem;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    color: $medium-gray;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__icon {
+    font-size: 2rem;
+    color: $primary-blue;
+    margin-bottom: 1rem;
   }
 
   &:hover {
-    background-color: $light-blue;
-    border-color: $primary-blue;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-blue, 0.1);
   }
-
-  input[type="radio"]:checked + &__label {
-    color: $primary-blue;
-    font-weight: 500;
-  }
-}
-
-// Progress bar component
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background-color: $medium-gray;
-  border-radius: 5px;
-  overflow: hidden;
-
-  &__fill {
-    height: 100%;
-    background-color: $accent-green;
-    transition: width 0.3s ease;
-  }
-}
-
-.status-emoji {
-  font-size: 2rem;
-  text-align: center;
-  margin-top: $spacing-unit;
 }
