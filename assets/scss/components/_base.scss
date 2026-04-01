@@ -1,0 +1,161 @@
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+
+  @include breakpoint-up(sm) {
+    font-size: 14px; // Ensure minimum 12px on mobile (14px * 0.875 = ~12.25px)
+  }
+
+  @include breakpoint-up(md) {
+    font-size: 16px;
+  }
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: $dark-gray;
+  background-color: $light-gray;
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+  &__content {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+// Typography - using relative units
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: $primary-blue;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 0.875rem; }
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+// Ensure minimum font sizes on mobile
+@include breakpoint-up(sm) {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    font-size: 0.875rem; // 14px base
+  }
+
+  h1 { font-size: 1.75rem; } // 24.5px
+  h2 { font-size: 1.5rem; }  // 21px
+  h3 { font-size: 1.25rem; } // 17.5px
+  h4 { font-size: 1.125rem; } // 15.75px
+  h5 { font-size: 1rem; }    // 14px
+  h6 { font-size: 0.875rem; } // 12.25px
+  p { font-size: 0.875rem; }  // 12.25px
+}
+
+// Buttons
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: $border-radius;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &--primary {
+    background-color: $primary-blue;
+    color: $white;
+
+    &:hover {
+      background-color: darken($primary-blue, 10%);
+      box-shadow: 0 4px 8px rgba($primary-blue, 0.2);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-blue;
+    color: $white;
+
+    &:hover {
+      background-color: darken($secondary-blue, 10%);
+      box-shadow: 0 4px 8px rgba($secondary-blue, 0.2);
+    }
+  }
+
+  &--success {
+    background-color: $accent-green;
+    color: $white;
+
+    &:hover {
+      background-color: darken($accent-green, 10%);
+      box-shadow: 0 4px 8px rgba($accent-green, 0.2);
+    }
+  }
+
+  &--warning {
+    background-color: $accent-orange;
+    color: $white;
+
+    &:hover {
+      background-color: darken($accent-orange, 10%);
+      box-shadow: 0 4px 8px rgba($accent-orange, 0.2);
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    border: 1px solid $primary-blue;
+    color: $primary-blue;
+
+    &:hover {
+      background-color: rgba($primary-blue, 0.05);
+      border-color: darken($primary-blue, 10%);
+    }
+  }
+}
+
+// Utility classes
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.mt-1 { margin-top: $spacing-unit * 0.5; }
+.mt-2 { margin-top: $spacing-unit; }
+.mt-3 { margin-top: $spacing-unit * 1.5; }
+.mt-4 { margin-top: $spacing-unit * 2; }
+.mb-1 { margin-bottom: $spacing-unit * 0.5; }
+.mb-2 { margin-bottom: $spacing-unit; }
+.mb-3 { margin-bottom: $spacing-unit * 1.5; }
+.mb-4 { margin-bottom: $spacing-unit * 2; }

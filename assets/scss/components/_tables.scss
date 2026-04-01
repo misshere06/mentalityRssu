@@ -1,0 +1,49 @@
+// Table styles
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+
+  &__header {
+    background-color: $primary-blue;
+    color: $white;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  th, td {
+    padding: 1rem;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  tr {
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba($primary-blue, 0.05);
+    }
+  }
+
+  &__row {
+    &:nth-child(even) {
+      background-color: rgba($light-gray, 0.3);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__action-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.875rem;
+  }
+}
+
+// Responsive table
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.5rem;
+}

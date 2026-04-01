@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+
+# IDE specific
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build files
+dist/
+build/
+assets/css/main.css
+assets/css/main.css.map
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Coverage
+coverage/
+
+# Debug
+*.stackdump
+
+# Testing
+/coverage/
+/test-results/
+
+# Documentation
+/docs/
+
+# Misc
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+
+#bitrix
+/bitrix

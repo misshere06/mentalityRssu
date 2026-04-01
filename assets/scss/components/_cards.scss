@@ -1,0 +1,76 @@
+// Card styles
+.card {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $light-gray;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $primary-blue;
+  }
+
+  &__body {
+    color: $dark-gray;
+  }
+
+  &__footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid $light-gray;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+// Stat card
+.stat-card {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &__value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $primary-blue;
+    margin-bottom: 0.5rem;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    color: $medium-gray;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__icon {
+    font-size: 2rem;
+    color: $primary-blue;
+    margin-bottom: 1rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($primary-blue, 0.1);
+  }
+}

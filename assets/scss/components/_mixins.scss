@@ -1,0 +1,46 @@
+// Mixins
+@mixin breakpoint-up($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: #{$breakpoint-sm}) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (min-width: #{$breakpoint-md}) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (min-width: #{$breakpoint-lg}) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (min-width: #{$breakpoint-xl}) { @content; }
+  }
+  @else if $breakpoint == xxl {
+    @media (min-width: #{$breakpoint-xxl}) { @content; }
+  }
+}
+
+@mixin breakpoint-down($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: #{$breakpoint-sm - 1}) { @content; }
+  }
+  @else if $breakpoint == md {
+    @media (max-width: #{$breakpoint-md - 1}) { @content; }
+  }
+  @else if $breakpoint == lg {
+    @media (max-width: #{$breakpoint-lg - 1}) { @content; }
+  }
+  @else if $breakpoint == xl {
+    @media (max-width: #{$breakpoint-xl - 1}) { @content; }
+  }
+  @else if $breakpoint == xxl {
+    @media (max-width: #{$breakpoint-xxl - 1}) { @content; }
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+  transition: $property $duration $timing;
+}

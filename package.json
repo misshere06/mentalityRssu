@@ -1,0 +1,49 @@
+{
+  "name": "mentalityrssu",
+  "version": "1.0.0",
+  "description": "Адаптивная веб-система для мониторинга психологического состояния студентов РГСУ",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && npx serve",
+    "build": "npx webpack",
+    "watch": "npx webpack --watch",
+    "dev": "npx webpack --watch & npx serve",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misshere06/mentalityRssu.git"
+  },
+  "keywords": [
+    "rgsu",
+    "psychology",
+    "students",
+    "monitoring",
+    "dashboard",
+    "responsive",
+    "bem",
+    "scss"
+  ],
+  "author": "RGSU Development Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/misshere06/mentalityRssu/issues"
+  },
+  "homepage": "https://github.com/misshere06/mentalityRssu#readme",
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
+    "babel-loader": "^10.0.0",
+    "chart.js": "^4.4.0",
+    "css-loader": "^7.1.3",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^2.10.0",
+    "sass": "^1.97.3",
+    "sass-loader": "^16.0.7",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^4.15.1"
+  }
+}

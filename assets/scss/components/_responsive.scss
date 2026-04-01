@@ -1,0 +1,55 @@
+// Responsive utilities
+@include breakpoint-down(sm) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .sidebar {
+    transform: translateX(-250px);
+    z-index: 1000;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($black, 0.5);
+    z-index: 999;
+  }
+}
+
+@include breakpoint-up(md) {
+  .sidebar-collapsed + .main {
+    margin-left: 0;
+  }
+}
+
+// Responsive grid
+.grid {
+  display: grid;
+  gap: 1.5rem;
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
