@@ -31,11 +31,7 @@
 }
 
 @include breakpoint-up(md) {
-  .main-content {
-    margin-left: 250px;
-  }
-
-  .sidebar-collapsed + .main-content {
+  .sidebar-collapsed + .main {
     margin-left: 0;
   }
 }
