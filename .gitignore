@@ -54,3 +54,6 @@ coverage/
 *.bak
 *.tmp
 *.orig
+
+#bitrix
+/bitrix
