@@ -1,7 +1,5 @@
 // Main application entry point
 import { initHeader } from './modules/header';
-import { initSidebar } from './modules/sidebar';
-import { initCharts } from './modules/charts';
 
 // Initialize all modules when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize modules
   initHeader();
-  initSidebar();
-  initCharts();
 
   console.log('Application initialized successfully!');
 });

@@ -1,0 +1,91 @@
+// Footer styles - RGSU style
+.footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  padding: 1.5rem 0;
+  margin-top: auto;
+  color: #333;
+
+  &__container {
+    width: 100%;
+    // display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    min-width: 0; /* Prevent flex container from expanding */
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0; /* Prevent flex item from expanding */
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    color: #1a3a6f;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+
+  &__description {
+    color: #666;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  &__search {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+
+  &__search-input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    min-width: 180px;
+    font-size: 0.9rem;
+
+    &:focus {
+      outline: none;
+      border-color: #1a3a6f;
+    }
+  }
+
+  &__search-button {
+    padding: 0.4rem 0.8rem;
+    background-color: #1a3a6f;
+    color: $white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:hover {
+      background-color: #2a4a7f;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  &__nav-item {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+
+    &:hover {
+      color: #1a3a6f;
+      background-color: #e8f0fe;
+    }
+  }
+}
