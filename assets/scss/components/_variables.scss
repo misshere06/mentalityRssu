@@ -5,10 +5,14 @@ $accent-green: #2ecc71;
 $accent-orange: #e67e22;
 $dark-gray: #263a55;
 $medium-gray: #7f8c8d;
-$light-gray: #f7f9fc;
+$light-gray: #d4d4df;
+$bg_color: #f7f9fc;
+$element_bg_color: #ffffff;
 $white: #ffffff;
 $black: #000000;
-$border-radius: 4px;
+$base_text_gray: #425978;
+$base_hover_text: #007fff;
+$base_border: #1a3a6f;
 $spacing-unit: 1rem;
 $font-family-base: 'Raleway', sans-serif;
 
@@ -18,3 +22,10 @@ $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
 $breakpoint-xxl: 1400px;
+
+//Border-radius
+
+//BorderStyles
+$block_border-radius: 12px;
+$block_border-shadow: 0 12px 25px 2px rgba(186, 194, 219, .1);
+$border-radius: 4px;

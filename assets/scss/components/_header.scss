@@ -2,7 +2,7 @@
 .header {
   width: 100%;
   background-color: $white;
-  color: $white;
+  color: $base_text_gray;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 92px;
@@ -122,34 +122,49 @@
     align-items: center;
     gap: 0.3rem;
     position: relative;
+
   }
 
   &__search-input {
     padding: 0.4rem 0.6rem 0.4rem 2.5rem;
-    border: 1px solid #3a5a8f;
-    border-radius: 3px;
-    min-width: 180px;
-    background-color: rgba($white, 0.1);
-    color: $white;
-    display: none; /* Hidden by default */
+    border: none;                     // убираем все стандартные границы
+    border-bottom: 1px solid $base_text_gray; // только нижняя серая линия
+    border-radius: 0;                 // убираем скругление, чтобы граница была строго снизу
+    min-width: 400px;
+    background-color: $white;
+    color: $base_text_gray;
+    display: none;
+
+    &:hover {
+      border-bottom-color: $base_hover_text;
+    }
 
     &:focus {
       outline: none;
-      border-color: #a5c8ff;
+      border-bottom-color: $base_hover_text;
     }
   }
 
   &__search-button {
     padding: 0.4rem 0.8rem;
-    background-color: #2a4a7f;
-    color: $white;
+    background-color: $white;
+    color: $base_text_gray;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      background-color: #3a5a8f;
+      color: $base_hover_text;
+    }
+
+    svg {
+      width: 1.9rem;
+      height: 1.9rem;
+      display: block;
     }
   }
 
@@ -160,7 +175,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: $white;
+    color: $base_text_gray;
     font-size: 1rem;
     cursor: pointer;
     padding: 0.2rem;
