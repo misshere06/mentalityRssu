@@ -107,6 +107,7 @@ Asset::getInstance()->addJs('/dist/main.bundle.js');
         <!-- Left sidebar with user info and menu -->
         <aside class="sidebar">
             <div class="sidebar__user-info">
+                <div class="user-info">
                 <div class="user-info__avatar">
                     <img class="user-info__avatar-img" src="/assets/img/avatar.png" alt="">
                 </div>
@@ -114,28 +115,61 @@ Asset::getInstance()->addJs('/dist/main.bundle.js');
                     <h3 class="user-info__name">John Doe</h3>
                     <p class="user-info__role">Psychologist</p>
                 </div>
+                <div class="user-info__actions">
+                    <button class="action-btn" aria-label="Сообщения" data-tooltip="Мои тесты">
+                        <span class="action-btn__icon">
+                            <img src="/assets/img/svg/arrow-basic.svg" alt="">
+                        </span>
+                    </button>
+                    <button class="action-btn" aria-label="Уведомления" data-tooltip="Уведомления">
+                        <span class="action-btn__icon">
+                            <img src="/assets/img/svg/arrow-basic.svg" alt="">
+                        </span>
+                    </button>
+                    <button class="action-btn" aria-label="Настройки профиля" data-tooltip="Профиль">
+                        <span class="action-btn__icon">
+                            <img src="/assets/img/svg/arrow-basic.svg" alt="">
+                        </span>
+                    </button>
+                    <button class="action-btn" aria-label="Выход" data-tooltip="Выход">
+                        <span class="action-btn__icon">
+                            <img src="/assets/img/svg/arrow-basic.svg" alt="">
+                        </span>
+                    </button>
+                </div>
+                </div>
             </div>
 
             <div class="sidebar__menu">
-                <a href="#" class="sidebar__menu-item active">
-                    <span class="sidebar__menu-icon">🏠</span>
-                    <span class="sidebar__menu-text">Dashboard</span>
-                </a>
-                <a href="#" class="sidebar__menu-item">
-                    <span class="sidebar__menu-icon">👥</span>
-                    <span class="sidebar__menu-text">Students</span>
-                </a>
-                <a href="#" class="sidebar__menu-item">
-                    <span class="sidebar__menu-icon">📊</span>
-                    <span class="sidebar__menu-text">Psychologists</span>
-                </a>
-                <a href="#" class="sidebar__menu-item">
-                    <span class="sidebar__menu-icon">📈</span>
-                    <span class="sidebar__menu-text">Reports</span>
-                </a>
-                <a href="#" class="sidebar__menu-item">
-                    <span class="sidebar__menu-icon">⚙️</span>
-                    <span class="sidebar__menu-text">Settings</span>
+                            <a href="#" class="sidebar__menu-item active">
+                    <span class="sidebar__menu-icon">
+                        <img src="/assets/img/svg/arrow-basic.svg" alt="" class="menu-icon-img">
+                    </span>
+                                <span class="sidebar__menu-text">Dashboard</span>
+                            </a>
+                            <a href="#" class="sidebar__menu-item">
+                    <span class="sidebar__menu-icon">
+                        <img src="/assets/img/svg/arrow-basic.svg" alt="" class="menu-icon-img">
+                    </span>
+                                <span class="sidebar__menu-text">Students</span>
+                            </a>
+                            <a href="#" class="sidebar__menu-item">
+                    <span class="sidebar__menu-icon">
+                        <img src="/assets/img/svg/arrow-basic.svg" alt="" class="menu-icon-img">
+                    </span>
+                                <span class="sidebar__menu-text">Psychologists</span>
+                            </a>
+                            <a href="#" class="sidebar__menu-item">
+                    <span class="sidebar__menu-icon">
+                        <img src="/assets/img/svg/arrow-basic.svg" alt="" class="menu-icon-img">
+                    </span>
+                                <span class="sidebar__menu-text">Reports</span>
+                            </a>
+                            <a href="#" class="sidebar__menu-item">
+                    <span class="sidebar__menu-icon">
+                        <img src="assets/img/svg/arrow-basic.svg" alt="" class="menu-icon-img">
+                    </span>
+                                <span class="sidebar__menu-text">Settings</span>
                 </a>
             </div>
         </aside>

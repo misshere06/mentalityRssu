@@ -189,21 +189,23 @@
   }
 
   &__nav-item {
-    color: $white;
+    color: $base_text_gray;
     text-decoration: none;
     font-weight: 400;
     padding: 0.4rem 0.8rem;
     border-radius: 3px;
     transition: all 0.2s ease;
-    font-size: 0.9rem;
+    font-size: $controllers-fontsize;
 
     &:hover {
       background-color: rgba($white, 0.1);
+      color: $base_hover_text;
     }
 
     &.active {
-      background-color: #2a4a7f;
+      background-color: $secondary-blue;
       font-weight: 500;
+      color: $white;
     }
   }
 }
@@ -367,7 +369,7 @@
     display: none;
     background: none;
     border: none;
-    color: $white;
+    color: $base_text_gray;
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
@@ -389,7 +391,7 @@
   }
 }
 
-// Responsive styles
+
 @media (max-width: $breakpoint-lg) {
   .sidebar {
     display: none;
