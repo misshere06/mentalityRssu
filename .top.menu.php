@@ -1,4 +1,3 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
 $aMenuLinks = Array(
 	Array(
@@ -34,6 +33,13 @@ $aMenuLinks = Array(
 		"contacts/", 
 		Array(), 
 		Array(), 
+		"" 
+	),
+	Array(
+		"Создать тест", 
+		"/sozdat-test/", 
+		Array(), 
+		Array("ICON_SVG"=>"/assets/img/svg/icon-tests.svg"), 
 		"" 
 	)
 );
