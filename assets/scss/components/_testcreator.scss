@@ -1,6 +1,4 @@
 
-  /* ===== _testcreator.scss (компиляция) ===== */
-  /* Переменные, согласованные с дизайн-системой RGSU */
 .testcreator {
   --primary-color: #1a3a6f;
   --primary-hover: #0f2b52;
@@ -25,7 +23,7 @@
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
-  background: var(--white);
+  background: $white;
   padding: 1rem 1.5rem;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -35,7 +33,7 @@
 .testcreator__title {
   font-size: 1.6rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: $primary-blue;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -46,23 +44,44 @@
 }
 
 .testcreator__add-btn {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: $primary-blue;
+  color: $white;
   border: none;
   padding: 0.6rem 1.2rem;
-  border-radius: 30px;
+  border-radius: $block_border-radius;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
+  box-shadow: $block_border-shadow;
+  margin-left: auto;
 }
 
 .testcreator__add-btn:hover {
-  background-color: var(--primary-hover);
+  background-color: $secondary-blue;
+  transform: translateY(-1px);
+}
+.testcreator__create-btn {
+  background-color: $accent-green;
+  color: $white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: $block_border-radius;
+  font-weight: 500;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: $block_border-shadow;
+}
+
+.testcreator__create-btn:hover {
+  background-color: $accent-green-hover;
   transform: translateY(-1px);
 }
 
@@ -75,16 +94,16 @@
 
 /* Карточка вопроса */
 .testcreator__question-card {
-  background: var(--white);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--gray-border);
-  box-shadow: var(--shadow-sm);
+  background: $white;
+  border-radius: $block_border-radius;
+  border: 1px solid $block_border-shadow;
+  box-shadow: $block_border-shadow;
   transition: all 0.2s;
   overflow: hidden;
 }
 
 .testcreator__question-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: $hoverblock_border-shadow;
   border-color: #cbd5e0;
 }
 
@@ -113,7 +132,7 @@
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--gray-border);
   border-radius: var(--radius-sm);
-  font-size: 1rem;
+  font-size: 1.4rem;
   font-family: inherit;
   transition: 0.2s;
   background: var(--white);
@@ -137,7 +156,7 @@
   border: 1px solid var(--gray-border);
   border-radius: var(--radius-sm);
   background-color: var(--white);
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   cursor: pointer;
 }
 
@@ -145,7 +164,7 @@
   background: none;
   border: none;
   color: #b91c1c;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
   padding: 0.5rem 0.7rem;
   border-radius: 30px;
@@ -155,6 +174,22 @@
 .testcreator__delete-question:hover {
   background-color: #fee2e2;
   color: #991b1b;
+}
+
+.testcreator__duplicate-question {
+  background: none;
+  border: none;
+  color: $base_text_gray;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.5rem 0.7rem;
+  border-radius: 30px;
+  transition: all 0.2s;
+}
+
+.testcreator__duplicate-question:hover {
+  background-color: #e0f2fe;
+  color: $secondary-blue;
 }
 
 /* Блок загрузки изображения */
@@ -202,7 +237,7 @@
   border: 1px solid var(--gray-border);
   padding: 0.4rem 1rem;
   border-radius: 30px;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: 0.2s;
   display: inline-flex;
@@ -223,7 +258,7 @@
 
 .testcreator__options-title {
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 1.25rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--gray-text);
@@ -255,7 +290,7 @@
   padding: 0.5rem 0.7rem;
   border: 1px solid var(--gray-border);
   border-radius: 30px;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   background: white;
 }
 
@@ -269,7 +304,7 @@
   border: none;
   color: #a0aec0;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   padding: 0 0.4rem;
   transition: 0.2s;
 }
@@ -280,21 +315,21 @@
 
 .testcreator__add-option {
   background: transparent;
-  border: 1px dashed var(--gray-border);
+  border: 1px dashed $dark-gray;
   padding: 0.5rem 1rem;
-  border-radius: 40px;
-  font-size: 0.8rem;
+  border-radius: $block_border-radius;
+  font-size: 1.1rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--primary-color);
+  color: $primary-blue;
   transition: 0.2s;
 }
 
 .testcreator__add-option:hover {
   background: #ecf3fa;
-  border-color: var(--primary-color);
+  border-color: $primary-blue;
 }
 
 .testcreator__info-message {
@@ -302,7 +337,7 @@
   padding: 0.8rem;
   border-radius: var(--radius-sm);
   color: #4a5568;
-  font-size: 0.85rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -327,5 +362,130 @@
   .testcreator__image-zone {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+}
+
+/* ===== FOOTER ===== */
+.testcreator__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1rem 1.5rem;
+  background: $white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-border);
+}
+
+.testcreator__footer-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.testcreator__add-btn-footer {
+  background-color: $primary-blue;
+  color: $white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: $block_border-radius;
+  font-weight: 500;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: $block_border-shadow;
+}
+
+.testcreator__add-btn-footer:hover {
+  background-color: $secondary-blue;
+  transform: translateY(-1px);
+}
+
+.testcreator__question-counter {
+  font-size: 1.4rem;
+  color: var(--gray-text);
+  background: #f0f2f5;
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+.testcreator__scroll-top-btn {
+  background-color: #e9ecef;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: $block_border-radius;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  color: $primary-blue;
+}
+
+.testcreator__scroll-top-btn:hover {
+  background-color: #dee2e6;
+  transform: translateY(-1px);
+}
+
+/* ===== ПОЛЕ БАЛЛОВ ДЛЯ ВАРИАНТА ===== */
+.testcreator__option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fafbfc;
+  padding: 0.4rem 0.6rem;
+  border-radius: 30px;
+  border: 1px solid #edf2f7;
+  flex-wrap: wrap; /* для адаптива */
+}
+
+.testcreator__option-item input[type="text"] {
+  flex: 2;
+  min-width: 120px;
+}
+
+.testcreator__option-score {
+  width: 70px;
+  padding: 0.5rem 0.5rem;
+  border: 1px solid var(--gray-border);
+  border-radius: 30px;
+  font-size: 1.3rem;
+  text-align: center;
+  background: white;
+}
+
+.testcreator__option-score:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.testcreator__remove-option {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.4rem;
+  transition: 0.2s;
+}
+
+@media (max-width: 560px) {
+  .testcreator__option-item {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: var(--radius-sm);
+  }
+  .testcreator__option-score {
+    width: auto;
   }
 }
