@@ -1,0 +1,331 @@
+
+  /* ===== _testcreator.scss (компиляция) ===== */
+  /* Переменные, согласованные с дизайн-системой RGSU */
+.testcreator {
+  --primary-color: #1a3a6f;
+  --primary-hover: #0f2b52;
+  --gray-light: #f8f9fa;
+  --gray-border: #e0e0e0;
+  --gray-text: #666;
+  --white: #ffffff;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --radius-md: 8px;
+  --radius-sm: 4px;
+}
+
+.testcreator {
+  max-width: 100%;
+}
+
+.testcreator__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: var(--white);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-border);
+}
+
+.testcreator__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.testcreator__title i {
+  font-size: 1.5rem;
+}
+
+.testcreator__add-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.testcreator__add-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Список вопросов */
+.testcreator__questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Карточка вопроса */
+.testcreator__question-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.testcreator__question-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e0;
+}
+
+/* Внутренние отступы */
+.testcreator__question-body {
+  padding: 1.5rem;
+}
+
+/* Шапка вопроса (текст вопроса + тип + удалить) */
+.testcreator__question-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  align-items: flex-start;
+}
+
+.testcreator__question-input {
+  flex: 3;
+  min-width: 200px;
+}
+
+.testcreator__question-input input,
+.testcreator__question-input textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--gray-border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: 0.2s;
+  background: var(--white);
+}
+
+.testcreator__question-input input:focus,
+.testcreator__question-input textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(26, 58, 111, 0.1);
+}
+
+.testcreator__type-select {
+  flex: 1;
+  min-width: 160px;
+}
+
+.testcreator__type-select select {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--gray-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--white);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.testcreator__delete-question {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem 0.7rem;
+  border-radius: 30px;
+  transition: all 0.2s;
+}
+
+.testcreator__delete-question:hover {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Блок загрузки изображения */
+.testcreator__image-zone {
+  margin-bottom: 1.25rem;
+  border: 1px dashed var(--gray-border);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem;
+  background: #fefefe;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testcreator__image-preview {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid #ddd;
+  background: #f3f4f6;
+}
+
+.testcreator__image-placeholder {
+  width: 70px;
+  height: 70px;
+  background: #f3f4f6;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 1.8rem;
+}
+
+.testcreator__image-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.testcreator__image-btn {
+  background: #f0f2f5;
+  border: 1px solid var(--gray-border);
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.testcreator__image-btn:hover {
+  background: #e2e6ea;
+}
+
+/* Блок вариантов ответов */
+.testcreator__options-area {
+  margin-top: 0.8rem;
+  border-top: 1px solid #edf2f7;
+  padding-top: 1rem;
+}
+
+.testcreator__options-title {
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gray-text);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.testcreator__options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.testcreator__option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fafbfc;
+  padding: 0.4rem 0.6rem;
+  border-radius: 30px;
+  border: 1px solid #edf2f7;
+}
+
+.testcreator__option-item input {
+  flex: 1;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--gray-border);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.testcreator__option-item input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.testcreator__remove-option {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0 0.4rem;
+  transition: 0.2s;
+}
+
+.testcreator__remove-option:hover {
+  color: #e53e3e;
+}
+
+.testcreator__add-option {
+  background: transparent;
+  border: 1px dashed var(--gray-border);
+  padding: 0.5rem 1rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--primary-color);
+  transition: 0.2s;
+}
+
+.testcreator__add-option:hover {
+  background: #ecf3fa;
+  border-color: var(--primary-color);
+}
+
+.testcreator__info-message {
+  background: #f8fafc;
+  padding: 0.8rem;
+  border-radius: var(--radius-sm);
+  color: #4a5568;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .testcreator__question-head {
+    flex-direction: column;
+  }
+  .testcreator__type-select,
+  .testcreator__question-input {
+    width: 100%;
+  }
+  .testcreator__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .testcreator__add-btn {
+    justify-content: center;
+  }
+  .testcreator__image-zone {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,34 +1,36 @@
 // Main application entry point
 import { initHeader } from './modules/header';
+import { initTestcreator } from './modules/testcreator';
 
 // Initialize all modules when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Application starting...');
+    console.log('Application starting...');
 
-  // Initialize modules
-  initHeader();
+    // Initialize modules
+    initHeader();
+    initTestcreator();  // ← запуск конструктора тестов
 
-  console.log('Application initialized successfully!');
+    console.log('Application initialized successfully!');
 });
 
 // Utility functions
 export function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
     };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
 }
 
 // DOM ready helper
 export function domReady(callback) {
-  if (document.readyState !== 'loading') {
-    callback();
-  } else {
-    document.addEventListener('DOMContentLoaded', callback);
-  }
+    if (document.readyState !== 'loading') {
+        callback();
+    } else {
+        document.addEventListener('DOMContentLoaded', callback);
+    }
 }
