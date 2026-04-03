@@ -1,0 +1,138 @@
+.burger-menu {
+  position: fixed;
+  top: 92px; /* Start from below header */
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 92px); /* Account for header height */
+  background-color: $white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease, visibility 0s linear 0.3s, opacity 0.3s ease;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+
+  &--active {
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #1a3a6f;
+    color: $white;
+  }
+
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: $white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  &__content {
+    padding: 1rem;
+  }
+
+  &__search {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__search-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+  }
+
+  &__search-button {
+    padding: 0.5rem 1rem;
+    background-color: #1a3a6f;
+    color: $white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+  }
+
+  &__nav-item {
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &.active {
+      background-color: #e8f0fe;
+      color: #1a3a6f;
+      font-weight: 500;
+    }
+  }
+
+  &__section-title {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  &__sidebar-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  &__sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+
+    &.active {
+      background-color: #e8f0fe;
+      color: #1a3a6f;
+      font-weight: 500;
+    }
+  }
+
+  &__sidebar-icon {
+    font-size: 1rem;
+    color: #666;
+  }
+}
