@@ -180,9 +180,20 @@ class MnTestCreateComponent extends CBitrixComponent
     {
         $iblockId = $this->arResult['IBLOCK_TESTS_ID'];
         $el = new CIBlockElement();
+
+        // Генерация символьного кода транслитом
+        $code = \CUtil::translit($name, "ru", ["replace_space" => "-", "replace_other" => "-"]);
+        // Проверка уникальности кода
+        $i = 1;
+        $originalCode = $code;
+        while (\CIBlockElement::GetList([], ['IBLOCK_ID' => $iblockId, 'CODE' => $code], false, false, ['ID'])->Fetch()) {
+            $code = $originalCode . '-' . $i++;
+        }
+
         $fields = [
             'IBLOCK_ID' => $iblockId,
             'NAME' => $name,
+            'CODE' => $code,
             'ACTIVE' => 'Y',
             'PREVIEW_TEXT' => $description,
             'PROPERTY_VALUES' => [

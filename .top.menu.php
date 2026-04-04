@@ -41,6 +41,13 @@ $aMenuLinks = Array(
 		Array(), 
 		Array("ICON_SVG"=>"/assets/img/svg/icon-tests.svg"), 
 		"" 
+	),
+	Array(
+		"Список тестов", 
+		"/testlist/", 
+		Array(), 
+		Array(), 
+		"" 
 	)
 );
 ?>

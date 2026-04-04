@@ -13,6 +13,12 @@ ErrorDocument 404 /404.php
 <IfModule mod_rewrite.c>
   Options +FollowSymLinks
   RewriteEngine On
+
+  # ===== ВАЖНО: свои правила ЧПУ ДО основного правила Битрикс =====
+  RewriteRule ^testlist/([a-zA-Z0-9_-]+)/?$ /testlist/detail.php?CODE=$1 [L,QSA]
+  RewriteRule ^testlist/?$ /testlist/index.php [L,QSA]
+
+  # ===== Основное правило Битрикс (должно быть последним) =====
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteCond %{REQUEST_FILENAME} !-d
