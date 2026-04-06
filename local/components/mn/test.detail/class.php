@@ -4,6 +4,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 use Bitrix\Main\Loader;
 use Bitrix\Main\Context;
+use Bitrix\Highloadblock\HighloadBlockTable;
+use Bitrix\Main\Entity;
 
 class MnTestDetailComponent extends CBitrixComponent
 {
@@ -33,6 +35,23 @@ class MnTestDetailComponent extends CBitrixComponent
 
     public function executeComponent()
     {
+        $this->request = Context::getCurrent()->getRequest();
+
+        // Более надёжная проверка AJAX: если есть POST-параметр action
+        $isAjax = $this->request->isAjaxRequest() || $this->request->getPost('action');
+
+        if ($isAjax && $this->request->getPost('action')) {
+            // Обязательно подключаем highloadblock для AJAX
+            if (!Loader::includeModule('highloadblock')) {
+                $this->sendJsonResponse(['success' => false, 'error' => 'Модуль highloadblock не установлен']);
+                return;
+            }
+            $this->handleAjax();
+            return;
+        }
+
+
+
         if (!Loader::includeModule('iblock')) {
             ShowError('Модуль инфоблоков не установлен');
             return;
@@ -51,6 +70,7 @@ class MnTestDetailComponent extends CBitrixComponent
 
         $this->arResult['QUESTIONS'] = $this->getQuestionsWithOptions();
 
+        $this->arResult['USER_PROGRESS'] = $this->getUserProgress();
 
         $this->includeComponentTemplate();
     }
@@ -112,4 +132,142 @@ class MnTestDetailComponent extends CBitrixComponent
         }
         return $options;
     }
+    protected function getUserProgress()
+    {
+        if (!$this->getUserId()) return null;
+
+        $hlblock = $this->getHighloadBlock();
+        if (!$hlblock) return null;
+
+        $entity = HighloadBlockTable::compileEntity($hlblock);
+        $entityClass = $entity->getDataClass();
+
+        $result = $entityClass::getList([
+            'filter' => [
+                'UF_USER_ID' => $this->getUserId(),
+                'UF_TEST_ID' => $this->arParams['ELEMENT_ID'],
+            ],
+            'limit' => 1,
+        ]);
+        if ($row = $result->fetch()) {
+            return [
+                'currentQuestion' => (int)$row['UF_CURRENT_QUESTION'],
+                'answers' => json_decode($row['UF_ANSWERS'], true) ?: [],
+                'status' => $row['UF_STATUS'],
+                'score' => (int)$row['UF_SCORE'],
+            ];
+        }
+        return null;
+    }
+
+    protected function saveUserProgress($currentIndex, $answers, $status = 'in_progress', $score = 0)
+    {
+        $userId = $this->getUserId();
+        if (!$userId) return false;
+
+        $hlblock = $this->getHighloadBlock();
+        if (!$hlblock) return false;
+
+        $entity = HighloadBlockTable::compileEntity($hlblock);
+        $entityClass = $entity->getDataClass();
+
+
+        $existing = $entityClass::getList([
+            'filter' => [
+                'UF_USER_ID' => $userId,
+                'UF_TEST_ID' => $this->arParams['ELEMENT_ID'],
+            ],
+            'limit' => 1,
+        ])->fetch();
+
+        $data = [
+            'UF_USER_ID' => $userId,
+            'UF_TEST_ID' => $this->arParams['ELEMENT_ID'],
+            'UF_CURRENT_QUESTION' => $currentIndex,
+            'UF_ANSWERS' => json_encode($answers, JSON_UNESCAPED_UNICODE),
+            'UF_STATUS' => $status,
+            'UF_SCORE' => $score,
+            'UF_DATE_UPDATE' => new \Bitrix\Main\Type\DateTime(),
+        ];
+
+        if ($existing) {
+            $result = $entityClass::update($existing['ID'], $data);
+        } else {
+            $result = $entityClass::add($data);
+        }
+        return $result->isSuccess();
+    }
+
+    protected function getUserId()
+    {
+        global $USER;
+        return $USER->IsAuthorized() ? $USER->GetID() : 0;
+    }
+
+    protected function getHighloadBlock()
+    {
+        if (!Loader::includeModule('highloadblock')) return null;
+        $hlblock = HighloadBlockTable::getList(['filter' => ['NAME' => 'UserTestResults']])->fetch();
+        return $hlblock ?: null;
+    }
+
+    protected function handleAjax()
+    {
+        error_reporting(0);
+
+        $action = $this->request->getPost('action');
+
+
+        switch ($action) {
+            case 'saveAnswer':
+                $this->saveAnswerAjax();
+                break;
+            case 'getProgress':
+                $this->getProgressAjax();
+                break;
+            case 'completeTest':
+                $this->completeTestAjax();
+                break;
+        }
+    }
+
+    protected function saveAnswerAjax()
+    {
+        $questionId = (int)$this->request->getPost('questionId');
+        $answerValue = $this->request->getPost('answerValue');
+        $currentIndex = (int)$this->request->getPost('currentIndex');
+        $answersJson = $this->request->getPost('answers');
+        $answers = $answersJson ? json_decode($answersJson, true) : [];
+
+        $answers[$questionId] = $answerValue;
+        $success = $this->saveUserProgress($currentIndex, $answers);
+        $this->sendJsonResponse(['success' => $success]);
+    }
+
+    protected function getProgressAjax()
+    {
+        $progress = $this->getUserProgress();
+        $this->sendJsonResponse(['success' => true, 'data' => $progress]);
+    }
+
+    protected function completeTestAjax()
+    {
+        $totalScore = (int)$this->request->getPost('totalScore');
+        $answersJson = $this->request->getPost('answers');
+        $answers = $answersJson ? json_decode($answersJson, true) : [];
+        $totalQuestions = (int)$this->request->getPost('totalQuestions'); // добавить
+        $lastIndex = $totalQuestions - 1;
+        $this->saveUserProgress($lastIndex, $answers, 'completed', $totalScore);
+        $this->sendJsonResponse(['success' => true]);
+    }
+
+    protected function sendJsonResponse($data)
+    {
+        global $APPLICATION;
+        $APPLICATION->RestartBuffer();
+        header('Content-Type: application/json');
+        echo \Bitrix\Main\Web\Json::encode($data);
+        die();
+    }
+
 }

@@ -10,8 +10,14 @@
         const progressFill = document.querySelector('.js-progress-fill');
         const questionContainer = document.querySelector('.js-question-container');
 
+
+        quizBlock.style.display = 'none';
+        completeBlock.style.display = 'none';
+
         let currentIndex = 0;
         let questions = [];
+        let userAnswers = {};
+
 
         // Загрузка вопросов из data-атрибута
         function loadQuestionsFromData() {
@@ -42,6 +48,77 @@
             return 'text';
         }
 
+        function loadProgress() {
+            return fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: 'action=getProgress'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        currentIndex = data.data.currentQuestion || 0;
+                        userAnswers = data.data.answers || {};
+
+                        if (data.data.status === 'completed') {
+                            introBlock.style.display = 'none';
+                            quizBlock.style.display = 'none';
+                            completeBlock.style.display = 'block';
+                            return true;
+                        }
+                        return true; // незавершённый прогресс
+                    }
+                    return false;
+                })
+                .catch(e => {
+                    console.error('Ошибка загрузки прогресса', e);
+                    return false;
+                });
+        }
+        function saveCurrentAnswerToServer(nextIndex) {
+            const currentQuestion = questions[currentIndex];
+            if (!currentQuestion) return Promise.resolve();
+
+            const formData = new FormData();
+            formData.append('action', 'saveAnswer');
+            formData.append('questionId', currentQuestion.ID);
+            formData.append('currentIndex', nextIndex); // сохраняем следующий индекс
+            formData.append('answers', JSON.stringify(userAnswers));
+
+            const container = questionContainer;
+            let answerValue = '';
+            const type = normalizeQuestionType(currentQuestion.PROPERTY_QUESTION_TYPE_VALUE);
+
+            if (type === 'radio') {
+                const selected = container.querySelector('input[type="radio"]:checked');
+                answerValue = selected ? selected.value : '';
+            } else if (type === 'checkbox') {
+                const selected = Array.from(container.querySelectorAll('input[type="checkbox"]:checked'))
+                    .map(cb => cb.value);
+                answerValue = JSON.stringify(selected);
+            } else if (type === 'select') {
+                const select = container.querySelector('select');
+                answerValue = select ? select.value : '';
+            } else if (type === 'text' || type === 'textarea') {
+                const input = container.querySelector('input, textarea');
+                answerValue = input ? input.value : '';
+            }
+
+            userAnswers[currentQuestion.ID] = answerValue;
+            formData.append('answerValue', answerValue);
+
+            return fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) console.error('Ошибка сохранения ответа');
+                });
+        }
         function updateProgress() {
             if (!questions.length) return;
             const percent = ((currentIndex + 1) / questions.length) * 100;
@@ -56,7 +133,7 @@
             const rawType = q.PROPERTY_QUESTION_TYPE_VALUE || '';
             const type = normalizeQuestionType(rawType);
             let imageHtml = '';
-            // Используем PICTURE_PATH, подготовленный в PHP
+
             const imgPath = q.PICTURE_PATH || '';
             if (imgPath) {
                 imageHtml = `<div class="onequestion-test__question-image"><img src="${imgPath}" alt=""></div>`;
@@ -113,41 +190,82 @@
                 </div>
             `;
             if (questionContainer) questionContainer.innerHTML = html;
-        }
 
-        function saveCurrentAnswer() {
-            alert('Ответ сохранён (демо-режим)');
-        }
 
-        function goToNextQuestion() {
-            saveCurrentAnswer();
-            if (currentIndex + 1 < questions.length) {
-                currentIndex++;
-                renderQuestion(currentIndex);
-                updateProgress();
-            } else {
-                if (quizBlock) quizBlock.style.display = 'none';
-                if (completeBlock) completeBlock.style.display = 'block';
+            if (userAnswers[q.ID]) {
+                const savedValue = userAnswers[q.ID];
+                const type = normalizeQuestionType(q.PROPERTY_QUESTION_TYPE_VALUE);
+                if (type === 'radio') {
+                    const radio = questionContainer.querySelector(`input[value="${savedValue}"]`);
+                    if (radio) radio.checked = true;
+                } else if (type === 'checkbox') {
+                    const values = JSON.parse(savedValue);
+                    values.forEach(val => {
+                        const cb = questionContainer.querySelector(`input[value="${val}"]`);
+                        if (cb) cb.checked = true;
+                    });
+                } else if (type === 'select') {
+                    const select = questionContainer.querySelector('select');
+                    if (select) select.value = savedValue;
+                } else if (type === 'text' || type === 'textarea') {
+                    const input = questionContainer.querySelector('input, textarea');
+                    if (input) input.value = savedValue;
+                }
             }
         }
 
+
+
+        function goToNextQuestion() {
+            const nextIndex = currentIndex + 1; // индекс следующего вопроса
+            saveCurrentAnswerToServer(nextIndex).then(() => {
+                if (nextIndex < questions.length) {
+                    currentIndex = nextIndex;
+                    renderQuestion(currentIndex);
+                    updateProgress();
+                } else {
+                    // Тест завершён – все вопросы отвечены
+                    fetch(window.location.href, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'action=completeTest&totalScore=0&totalQuestions=' + questions.length + '&answers=' + JSON.stringify(userAnswers)
+                    })
+                        .then(res => res.json())
+                        .then(() => {
+                            if (quizBlock) quizBlock.style.display = 'none';
+                            if (completeBlock) completeBlock.style.display = 'block';
+                        });
+                }
+            });
+        }
+        loadProgress();
         if (startBtn) {
-            startBtn.addEventListener('click', () => {
-                // Загружаем вопросы из data-атрибута при клике
+            startBtn.addEventListener('click', async () => {
                 loadQuestionsFromData();
-                console.log('questions length on click:', questions.length);
                 if (questions.length === 0) {
                     alert('В тесте нет вопросов');
                     return;
                 }
-                if (introBlock) introBlock.style.display = 'none';
-                if (quizBlock) quizBlock.style.display = 'block';
-                currentIndex = 0;
-                renderQuestion(currentIndex);
-                updateProgress();
+
+                const hasProgress = await loadProgress();
+
+                if (completeBlock.style.display === 'block') {
+                    return;
+                }
+                if (hasProgress && Object.keys(userAnswers).length > 0) {
+                    introBlock.style.display = 'none';
+                    quizBlock.style.display = 'block';
+                    renderQuestion(currentIndex);
+                    updateProgress();
+                } else {
+                    introBlock.style.display = 'none';
+                    quizBlock.style.display = 'block';
+                    currentIndex = 0;
+                    userAnswers = {};
+                    renderQuestion(currentIndex);
+                    updateProgress();
+                }
             });
-        } else {
-            console.error('Кнопка .js-start-btn не найдена');
         }
 
         if (nextBtn) {
@@ -165,5 +283,6 @@
                 return m;
             });
         }
+
     });
 })();
