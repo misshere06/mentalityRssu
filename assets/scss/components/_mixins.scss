@@ -44,3 +44,14 @@
 @mixin transition($property: all, $duration: 0.3s, $timing: ease) {
   transition: $property $duration $timing;
 }
+
+
+@mixin responsive-font($min-size, $max-size) {
+  font-size: $min-size;
+  @media (min-width: $breakpoint-sm) {
+    font-size: calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1200 - 320)));
+  }
+  @media (min-width: 1200px) {
+    font-size: $max-size;
+  }
+}

@@ -1,46 +1,26 @@
 <?
 $aMenuLinks = Array(
-	Array(
-		"Компания", 
-		"company/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Новости", 
-		"news/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Продукция", 
-		"products/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Услуги", 
-		"services/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Контакты", 
-		"contacts/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
+
 	Array(
 		"Создать тест", 
 		"/sozdat-test/", 
 		Array(), 
 		Array("ICON_SVG"=>"/assets/img/svg/icon-tests.svg"), 
 		"" 
-	)
+	),
+	Array(
+		"Список тестов", 
+		"/testlist/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+    Array(
+        "Тесты",
+        "/tests/",
+        Array(),
+        Array(),
+        ""
+    )
 );
 ?>

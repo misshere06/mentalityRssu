@@ -1,0 +1,218 @@
+$primary-color: #2c7be5;
+$success-color: #28a745;
+$border-color: #e2e8f0;
+$text-dark: #1a2c3e;
+$text-light: #5a6e7f;
+$bg-gray: #f8fafc;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+$border-radius: 12px;
+$transition: all 0.2s ease;
+
+.test-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $base_text_gray;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid $primary-color;
+    padding-left: 1rem;
+  }
+
+  &__desc {
+    color: $base_text_gray;
+    background: $bg_color;
+    padding: 1rem 1.5rem;
+    border-radius: $border-radius;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  &__questions {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__question {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $block_border-shadow;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+    border: 1px solid $base_border;
+
+    &:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  &__question-header {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+
+  &__question-num {
+    font-weight: 700;
+    background: $primary-blue;
+    color: white;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  &__question-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: $base_text_gray;
+    line-height: 1.4;
+  }
+
+  &__question-image {
+    margin: 1rem 0;
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      border: 1px solid $base_border;
+    }
+  }
+
+  &__options {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    background: $bg_color;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: darken($bg-gray, 3%);
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: $primary-color;
+    }
+
+    &--checkbox {
+      // дополнительных стилей не требуется
+    }
+  }
+
+  &__option-text {
+    font-size: 0.95rem;
+    color: $text-dark;
+  }
+
+  &__select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $gray-border;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+
+  &__text-input,
+  &__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: $transition;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+  }
+
+  &__actions {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+
+  &__submit {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 0.85rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: $transition;
+    box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+
+    &:hover {
+      background: darken($primary-color, 8%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba($primary-color, 0.35);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+// Адаптивность для мобильных
+@media (max-width: 640px) {
+  .test-detail {
+    padding: 1rem;
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__question {
+      padding: 1rem;
+    }
+
+    &__question-header {
+      flex-wrap: wrap;
+    }
+
+    &__option {
+      padding: 0.4rem 0.6rem;
+    }
+  }
+}

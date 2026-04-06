@@ -1,0 +1,237 @@
+$primary: #2c7be5;
+$success: #28a745;
+$border: #e2e8f0;
+$text-dark: #1a2c3e;
+$text-light: #5a6e7f;
+$bg-light: #f8fafc;
+$shadow: 0 4px 12px rgba(0,0,0,0.05);
+$radius: 12px;
+
+.onequestion-test {
+  max-width: 700px;
+  margin: 2rem auto;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  &__intro {
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+  }
+
+  &__image {
+    margin-bottom: 1rem;
+    img {
+      max-width: 100%;
+      border-radius: $radius;
+      max-height: 200px;
+      object-fit: cover;
+    }
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 0.75rem;
+  }
+
+  &__description {
+    color: $text-light;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  &__start-btn {
+    background: $primary;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    &:hover {
+      background: darken($primary, 8%);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__quiz {
+    background: white;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+    padding: 1.5rem;
+  }
+
+  &__progress {
+    margin-bottom: 1.5rem;
+  }
+
+  &__progress-text {
+    font-size: 0.85rem;
+    color: $text-light;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  &__progress-bar {
+    background: $border;
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    background: $primary;
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  &__question {
+    margin-bottom: 1.5rem;
+  }
+
+  &__question-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: $text-dark;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  &__question-image {
+    margin-bottom: 1rem;
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    background: $bg-light;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+    &:hover {
+      background: darken($bg-light, 3%);
+    }
+    input {
+      width: 18px;
+      height: 18px;
+      accent-color: $primary;
+    }
+  }
+
+  &__option-text {
+    font-size: 0.95rem;
+    color: $text-dark;
+  }
+
+  &__select,
+  &__text-input,
+  &__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s;
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 2px rgba($primary, 0.2);
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+  }
+
+  &__next-btn {
+    background: $success;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 40px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    &:hover {
+      background: darken($success, 8%);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__complete {
+    text-align: center;
+    background: white;
+    padding: 2rem;
+    border-radius: $radius;
+    box-shadow: $shadow;
+    border: 1px solid $border;
+  }
+
+  &__complete-icon {
+    font-size: 4rem;
+    background: $success;
+    color: white;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+  }
+
+  &__complete-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  &__complete-text {
+    color: $text-light;
+  }
+
+  &__error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    background: #fff5f5;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 640px) {
+  .onequestion-test {
+    margin: 1rem;
+    &__title {
+      font-size: 1.4rem;
+    }
+    &__quiz {
+      padding: 1rem;
+    }
+    &__question-text {
+      font-size: 1rem;
+    }
+  }
+}
