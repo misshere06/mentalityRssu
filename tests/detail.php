@@ -12,14 +12,14 @@ if (empty($code)) {
     }
 }
 if (empty($code)) {
-    LocalRedirect('/testlist/');
+    LocalRedirect('/tests/');
     return;
 }
 ?>
 
 <?$APPLICATION->IncludeComponent(
     "mn:test.detail",
-    "onequestion",
+    ".default",
     [
         "IBLOCK_TESTS_ID" => 6,
         "IBLOCK_QUESTIONS_ID" => 7,
@@ -27,7 +27,7 @@ if (empty($code)) {
         "ELEMENT_CODE" => $code,
     ],
     null,
-    ['TEMPLATE' => 'onequestion']
+    ['TEMPLATE' => '.default']
 );?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

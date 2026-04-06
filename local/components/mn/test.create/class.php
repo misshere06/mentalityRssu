@@ -214,31 +214,56 @@ class MnTestCreateComponent extends CBitrixComponent
     {
         $iblockId = $this->arResult['IBLOCK_QUESTIONS_ID'];
         $el = new CIBlockElement();
+
         $imageField = [];
         if (!empty($questionData['image']) && strpos($questionData['image'], 'data:image') === 0) {
             $imageFile = $this->base64ToFile($questionData['image'], 'question_image');
-            if ($imageFile) {
-                $imageField = $imageFile;
-            }
+            if ($imageFile) $imageField = $imageFile;
         }
+
         $fields = [
             'IBLOCK_ID' => $iblockId,
             'NAME' => $questionData['text'],
             'ACTIVE' => 'Y',
-            'PROPERTY_VALUES' => [
-                'TEST_ID' => $testId,
-                'QUESTION_TYPE' => $questionData['type'],
-            ],
         ];
         if (!empty($imageField)) {
             $fields['PREVIEW_PICTURE'] = $imageField;
         }
+
         $questionId = $el->Add($fields);
         if (!$questionId) {
             $this->errors[] = new Error($el->LAST_ERROR);
-            AddMessage2Log("testcreator: createQuestion error: " . $el->LAST_ERROR, "testcreator");
+            AddMessage2Log("testcreator: createQuestion Add error: " . $el->LAST_ERROR, "testcreator");
             return false;
         }
+
+
+        $questionTypeValue = $questionData['type']; // 'radio', 'checkbox', ...
+        $propEnumId = null;
+
+        $propRes = CIBlockProperty::GetList([], ['IBLOCK_ID' => $iblockId, 'CODE' => 'QUESTION_TYPE']);
+        if ($prop = $propRes->Fetch()) {
+            if ($prop['PROPERTY_TYPE'] == 'L') { // Список
+                $enumRes = CIBlockPropertyEnum::GetList([], ['PROPERTY_ID' => $prop['ID'], 'XML_ID' => $questionTypeValue]);
+                if ($enum = $enumRes->Fetch()) {
+                    $propEnumId = $enum['ID'];
+                } else {
+                    $this->errors[] = new Error("Не найдено значение списка для типа вопроса '{$questionTypeValue}'");
+                    CIBlockElement::Delete($questionId);
+                    return false;
+                }
+            } else {
+
+                $propEnumId = $questionTypeValue;
+            }
+        }
+
+
+        CIBlockElement::SetPropertyValuesEx($questionId, $iblockId, [
+            'TEST_ID' => $testId,
+            'QUESTION_TYPE' => $propEnumId,
+        ]);
+
         return $questionId;
     }
 

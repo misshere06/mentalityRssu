@@ -16,7 +16,6 @@ if (!empty($arResult['ITEMS'])): ?>
                         <a href="<?=str_replace('#ELEMENT_CODE#', $item['CODE'], $arParams['DETAIL_URL'])?>">
                             <?=htmlspecialcharsbx($item['NAME'])?>
                         </a>
-                        <a href="<?=$item['DETAIL_URL']?>"><?=htmlspecialcharsbx($item['NAME'])?></a>
                     </h2>
                     <?php if ($item['PREVIEW_TEXT']): ?>
                         <div class="test-list__item-desc"><?=htmlspecialcharsbx($item['PREVIEW_TEXT'])?></div>
