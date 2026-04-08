@@ -25,7 +25,8 @@ CJSCore::Init(['ajax']);
     <!-- Блок информации о тесте -->
     <div class="testcreator__info">
         <input type="text" id="testName" placeholder="Название теста" class="testcreator__test-name">
-        <textarea id="testDescription" placeholder="Описание теста (инструкция)"></textarea>
+        <textarea id="testDescription" placeholder="Описание теста"></textarea>
+        <textarea id="testInstruction" placeholder="Инструкция"></textarea>
         <select id="categoryId" class="testcreator__category-select">
             <option value="0">-- Выберите категорию --</option>
             <?php foreach ($arResult['CATEGORIES'] as $cat): ?>

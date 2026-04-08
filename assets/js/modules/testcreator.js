@@ -304,11 +304,12 @@ export function initTestcreator() {
     if (addButtonFooter) addButtonFooter.addEventListener('click', addNewQuestion);
     initDemo();
 
-    // Обработчик сохранения теста
+    // Обработчик сохранения теста (с добавлением инструкции)
     if (createBtn) {
         createBtn.addEventListener('click', function() {
             const testName = document.getElementById('testName').value.trim();
             const description = document.getElementById('testDescription').value.trim();
+            const instruction = document.getElementById('testInstruction').value.trim(); // добавлено
             const categoryId = document.getElementById('categoryId').value;
             if (!testName) { alert('Введите название теста'); return; }
             if (!categoryId || categoryId == '0') { alert('Выберите категорию'); return; }
@@ -332,7 +333,14 @@ export function initTestcreator() {
                 BX.ajax({
                     url: window.location.href,
                     method: 'POST',
-                    data: { action: 'saveTest', testName: testName, description: description, categoryId: categoryId, questionsData: JSON.stringify(questions) },
+                    data: {
+                        action: 'saveTest',
+                        testName: testName,
+                        description: description,
+                        instruction: instruction, // добавлено
+                        categoryId: categoryId,
+                        questionsData: JSON.stringify(questions)
+                    },
                     onsuccess: function(response) {
                         let data;
                         try { data = JSON.parse(response); } catch(e) { data = { success: false, error: 'Ошибка ответа сервера' }; }

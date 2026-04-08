@@ -48,6 +48,34 @@
             return 'text';
         }
 
+        function calculateTotalScore() {
+            let total = 0;
+            for (let i = 0; i < questions.length; i++) {
+                const q = questions[i];
+                const answer = userAnswers[q.ID];
+                if (!answer) continue; // вопрос без ответа – 0 баллов
+
+                const type = normalizeQuestionType(q.PROPERTY_QUESTION_TYPE_VALUE);
+                const options = q.OPTIONS;
+
+                if (type === 'radio' || type === 'select') {
+                    // один выбранный вариант
+                    const selectedId = answer;
+                    const option = options.find(opt => opt.ID == selectedId);
+                    if (option) total += parseFloat(option.PROPERTY_SCORE_VALUE) || 0;
+                }
+                else if (type === 'checkbox') {
+                    // несколько выбранных вариантов (JSON-массив)
+                    const selectedIds = JSON.parse(answer);
+                    selectedIds.forEach(id => {
+                        const option = options.find(opt => opt.ID == id);
+                        if (option) total += parseFloat(option.PROPERTY_SCORE_VALUE) || 0;
+                    });
+                }
+
+            }
+            return total;
+        }
         function loadProgress() {
             return fetch(window.location.href, {
                 method: 'POST',
@@ -224,11 +252,12 @@
                     renderQuestion(currentIndex);
                     updateProgress();
                 } else {
-                    // Тест завершён – все вопросы отвечены
+                    const totalScore = calculateTotalScore();
+
                     fetch(window.location.href, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: 'action=completeTest&totalScore=0&totalQuestions=' + questions.length + '&answers=' + JSON.stringify(userAnswers)
+                        body: 'action=completeTest&totalScore=' + totalScore + '&totalQuestions=' + questions.length + '&answers=' + JSON.stringify(userAnswers)
                     })
                         .then(res => res.json())
                         .then(() => {

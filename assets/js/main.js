@@ -1,14 +1,21 @@
 // Main application entry point
 import { initHeader } from './modules/header';
 import { initTestcreator } from './modules/testcreator';
+import { initTesteditor } from './modules/testedit';
 
-// Initialize all modules when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Application starting...');
-
-    // Initialize modules
     initHeader();
-    initTestcreator();  // ← запуск конструктора тестов
+
+    // Определяем, какая страница открыта
+    const isTestEditor = document.querySelector('.test-editor');
+    if (isTestEditor) {
+        console.log('Initializing test editor');
+        initTesteditor();
+    } else {
+        console.log('Initializing test creator');
+        initTestcreator();
+    }
 
     console.log('Application initialized successfully!');
 });
@@ -26,7 +33,6 @@ export function debounce(func, wait) {
     };
 }
 
-// DOM ready helper
 export function domReady(callback) {
     if (document.readyState !== 'loading') {
         callback();

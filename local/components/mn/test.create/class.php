@@ -17,7 +17,6 @@ class MnTestCreateComponent extends CBitrixComponent
     public function onPrepareComponentParams($params)
     {
         $this->errors = new ErrorCollection();
-        // Приводим параметры к int (с учетом ключей с тильдой)
         $params['IBLOCK_CATEGORIES_ID'] = (int)($params['IBLOCK_CATEGORIES_ID'] ?? $params['~IBLOCK_CATEGORIES_ID'] ?? 0);
         $params['IBLOCK_TESTS_ID'] = (int)($params['IBLOCK_TESTS_ID'] ?? $params['~IBLOCK_TESTS_ID'] ?? 0);
         $params['IBLOCK_QUESTIONS_ID'] = (int)($params['IBLOCK_QUESTIONS_ID'] ?? $params['~IBLOCK_QUESTIONS_ID'] ?? 0);
@@ -34,20 +33,17 @@ class MnTestCreateComponent extends CBitrixComponent
 
         $this->request = Context::getCurrent()->getRequest();
 
-        // ВСЕГДА заполняем arResult ДО обработки AJAX
         $this->arResult['IBLOCK_CATEGORIES_ID'] = $this->arParams['IBLOCK_CATEGORIES_ID'];
         $this->arResult['IBLOCK_TESTS_ID'] = $this->arParams['IBLOCK_TESTS_ID'];
         $this->arResult['IBLOCK_QUESTIONS_ID'] = $this->arParams['IBLOCK_QUESTIONS_ID'];
         $this->arResult['IBLOCK_OPTIONS_ID'] = $this->arParams['IBLOCK_OPTIONS_ID'];
-        $this->arResult['CATEGORIES'] = $this->getCategories(); // нужно для шаблона, но и для AJAX может пригодиться
+        $this->arResult['CATEGORIES'] = $this->getCategories();
 
-        // Теперь обрабатываем AJAX
         if ($this->request->isAjaxRequest() && $this->request->getPost('action') === 'saveTest') {
             $this->handleSaveTest();
             return;
         }
 
-        // Если не AJAX - просто показываем шаблон
         $this->includeComponentTemplate();
     }
 
@@ -73,10 +69,6 @@ class MnTestCreateComponent extends CBitrixComponent
     {
         $post = $this->request->getPostList()->toArray();
 
-        // Диагностика: выведем в лог значения ID
-        AddMessage2Log("testcreator: handleSaveTest, IBLOCK_CATEGORIES_ID = " . $this->arResult['IBLOCK_CATEGORIES_ID'], "testcreator");
-        AddMessage2Log("testcreator: POST = " . print_r($post, true), "testcreator");
-
         $testName = trim($post['testName'] ?? '');
         if (empty($testName)) {
             $this->sendJsonError('Введите название теста');
@@ -87,66 +79,45 @@ class MnTestCreateComponent extends CBitrixComponent
             $this->sendJsonError('Выберите категорию');
         }
 
+        $description = trim($post['description'] ?? '');
+        $instruction = trim($post['instruction'] ?? '');
+
         $questionsData = json_decode($post['questionsData'] ?? '', true);
         if (empty($questionsData)) {
             $this->sendJsonError('Нет вопросов');
         }
 
-        // Проверка ID инфоблоков (теперь они должны быть)
         $catIblockId = $this->arResult['IBLOCK_CATEGORIES_ID'];
-        if (!$catIblockId) {
-            $this->sendJsonError('Не задан ID инфоблока категорий (IBLOCK_CATEGORIES_ID). Полученные arParams: ' . print_r($this->arParams, true));
-        }
-
         $testsIblockId = $this->arResult['IBLOCK_TESTS_ID'];
-        if (!$testsIblockId) {
-            $this->sendJsonError('Не задан ID инфоблока тестов (IBLOCK_TESTS_ID)');
-        }
-
         $questionsIblockId = $this->arResult['IBLOCK_QUESTIONS_ID'];
-        if (!$questionsIblockId) {
-            $this->sendJsonError('Не задан ID инфоблока вопросов (IBLOCK_QUESTIONS_ID)');
-        }
-
         $optionsIblockId = $this->arResult['IBLOCK_OPTIONS_ID'];
-        if (!$optionsIblockId) {
-            $this->sendJsonError('Не задан ID инфоблока вариантов (IBLOCK_OPTIONS_ID)');
-        }
 
-        // Существование инфоблоков
-        if (!CIBlock::GetByID($catIblockId)->Fetch()) {
-            $this->sendJsonError("Инфоблок категорий с ID {$catIblockId} не существует");
-        }
-        if (!CIBlock::GetByID($testsIblockId)->Fetch()) {
-            $this->sendJsonError("Инфоблок тестов с ID {$testsIblockId} не существует");
-        }
-        if (!CIBlock::GetByID($questionsIblockId)->Fetch()) {
-            $this->sendJsonError("Инфоблок вопросов с ID {$questionsIblockId} не существует");
-        }
-        if (!CIBlock::GetByID($optionsIblockId)->Fetch()) {
-            $this->sendJsonError("Инфоблок вариантов с ID {$optionsIblockId} не существует");
-        }
+        if (!$catIblockId) $this->sendJsonError('Не задан ID инфоблока категорий');
+        if (!$testsIblockId) $this->sendJsonError('Не задан ID инфоблока тестов');
+        if (!$questionsIblockId) $this->sendJsonError('Не задан ID инфоблока вопросов');
+        if (!$optionsIblockId) $this->sendJsonError('Не задан ID инфоблока вариантов');
 
-        // Проверка категории
+        if (!CIBlock::GetByID($catIblockId)->Fetch()) $this->sendJsonError("Инфоблок категорий с ID {$catIblockId} не существует");
+        if (!CIBlock::GetByID($testsIblockId)->Fetch()) $this->sendJsonError("Инфоблок тестов с ID {$testsIblockId} не существует");
+        if (!CIBlock::GetByID($questionsIblockId)->Fetch()) $this->sendJsonError("Инфоблок вопросов с ID {$questionsIblockId} не существует");
+        if (!CIBlock::GetByID($optionsIblockId)->Fetch()) $this->sendJsonError("Инфоблок вариантов с ID {$optionsIblockId} не существует");
+
         $categoryExists = CIBlockElement::GetByID($categoryId)->Fetch();
         if (!$categoryExists) {
-            $this->sendJsonError("Категория с ID {$categoryId} не найдена. Создайте хотя бы одну категорию в инфоблоке ID={$catIblockId}");
+            $this->sendJsonError("Категория с ID {$categoryId} не найдена");
         }
 
-        // Права
         $rights = CIBlock::GetPermission($testsIblockId);
         if ($rights < 'W') {
-            $this->sendJsonError("Недостаточно прав для добавления теста (требуется запись). Ваши права: {$rights}");
+            $this->sendJsonError("Недостаточно прав для добавления теста (требуется запись)");
         }
 
-        // Создание теста
-        $testId = $this->createTest($testName, $post['description'] ?? '', $categoryId);
+        $testId = $this->createTest($testName, $description, $instruction, $categoryId);
         if (!$testId) {
             $errorMsg = $this->errors->current() ? $this->errors->current()->getMessage() : 'Неизвестная ошибка';
             $this->sendJsonError('Ошибка создания теста: ' . $errorMsg);
         }
 
-        // Создание вопросов и вариантов
         $questionIds = [];
         foreach ($questionsData as $idx => $q) {
             $questionId = $this->createQuestion($testId, $q);
@@ -176,16 +147,14 @@ class MnTestCreateComponent extends CBitrixComponent
         $this->sendJsonSuccess(['testId' => $testId, 'message' => 'Тест успешно создан!']);
     }
 
-    protected function createTest($name, $description, $categoryId)
+    protected function createTest($name, $description, $instruction, $categoryId)
     {
         $iblockId = $this->arResult['IBLOCK_TESTS_ID'];
         $el = new CIBlockElement();
 
-        // Генерация символьного кода транслитом
         $code = \CUtil::translit($name, "ru", ["replace_space" => "-", "replace_other" => "-"]);
-        // Проверка уникальности кода
-        $i = 1;
         $originalCode = $code;
+        $i = 1;
         while (\CIBlockElement::GetList([], ['IBLOCK_ID' => $iblockId, 'CODE' => $code], false, false, ['ID'])->Fetch()) {
             $code = $originalCode . '-' . $i++;
         }
@@ -195,16 +164,16 @@ class MnTestCreateComponent extends CBitrixComponent
             'NAME' => $name,
             'CODE' => $code,
             'ACTIVE' => 'Y',
-            'PREVIEW_TEXT' => $description,
             'PROPERTY_VALUES' => [
-                'CATEGORY' => $categoryId,
+                'CATEGORY'    => $categoryId,
                 'DESCRIPTION' => $description,
+                'INSTRUCTION' => $instruction,
             ],
         ];
+
         $testId = $el->Add($fields);
         if (!$testId) {
             $this->errors[] = new Error($el->LAST_ERROR);
-            AddMessage2Log("testcreator: createTest error: " . $el->LAST_ERROR, "testcreator");
             return false;
         }
         return $testId;
@@ -215,54 +184,45 @@ class MnTestCreateComponent extends CBitrixComponent
         $iblockId = $this->arResult['IBLOCK_QUESTIONS_ID'];
         $el = new CIBlockElement();
 
-        $imageField = [];
-        if (!empty($questionData['image']) && strpos($questionData['image'], 'data:image') === 0) {
-            $imageFile = $this->base64ToFile($questionData['image'], 'question_image');
-            if ($imageFile) $imageField = $imageFile;
-        }
-
         $fields = [
             'IBLOCK_ID' => $iblockId,
             'NAME' => $questionData['text'],
             'ACTIVE' => 'Y',
         ];
-        if (!empty($imageField)) {
-            $fields['PREVIEW_PICTURE'] = $imageField;
-        }
 
         $questionId = $el->Add($fields);
         if (!$questionId) {
             $this->errors[] = new Error($el->LAST_ERROR);
-            AddMessage2Log("testcreator: createQuestion Add error: " . $el->LAST_ERROR, "testcreator");
             return false;
         }
 
+        $propertyValues = ['TEST_ID' => $testId];
 
-        $questionTypeValue = $questionData['type']; // 'radio', 'checkbox', ...
-        $propEnumId = null;
-
+        $questionTypeValue = $questionData['type'];
         $propRes = CIBlockProperty::GetList([], ['IBLOCK_ID' => $iblockId, 'CODE' => 'QUESTION_TYPE']);
         if ($prop = $propRes->Fetch()) {
-            if ($prop['PROPERTY_TYPE'] == 'L') { // Список
+            if ($prop['PROPERTY_TYPE'] == 'L') {
                 $enumRes = CIBlockPropertyEnum::GetList([], ['PROPERTY_ID' => $prop['ID'], 'XML_ID' => $questionTypeValue]);
                 if ($enum = $enumRes->Fetch()) {
-                    $propEnumId = $enum['ID'];
+                    $propertyValues['QUESTION_TYPE'] = $enum['ID'];
                 } else {
                     $this->errors[] = new Error("Не найдено значение списка для типа вопроса '{$questionTypeValue}'");
                     CIBlockElement::Delete($questionId);
                     return false;
                 }
             } else {
-
-                $propEnumId = $questionTypeValue;
+                $propertyValues['QUESTION_TYPE'] = $questionTypeValue;
             }
         }
 
+        CIBlockElement::SetPropertyValuesEx($questionId, $iblockId, $propertyValues);
 
-        CIBlockElement::SetPropertyValuesEx($questionId, $iblockId, [
-            'TEST_ID' => $testId,
-            'QUESTION_TYPE' => $propEnumId,
-        ]);
+        if (!empty($questionData['image']) && strpos($questionData['image'], 'data:image') === 0) {
+            $imageFileId = $this->base64ToFile($questionData['image'], 'question_image');
+            if ($imageFileId) {
+                CIBlockElement::SetPropertyValueCode($questionId, 'IMAGE', $imageFileId);
+            }
+        }
 
         return $questionId;
     }
@@ -284,7 +244,6 @@ class MnTestCreateComponent extends CBitrixComponent
         $optionId = $el->Add($fields);
         if (!$optionId) {
             $this->errors[] = new Error($el->LAST_ERROR);
-            AddMessage2Log("testcreator: createOption error: " . $el->LAST_ERROR, "testcreator");
             return false;
         }
         return $optionId;
@@ -298,16 +257,32 @@ class MnTestCreateComponent extends CBitrixComponent
         $ext = $matches[1];
         $encoded = $matches[2];
         $decoded = base64_decode($encoded);
-        if (!$decoded) return false;
+        if (!$decoded) {
+            return false;
+        }
 
-        $tempPath = $_SERVER['DOCUMENT_ROOT'] . '/upload/tmp/' . $prefix . '_' . md5(uniqid()) . '.' . $ext;
-        if (!is_dir(dirname($tempPath))) mkdir(dirname($tempPath), 0777, true);
-        file_put_contents($tempPath, $decoded);
+        $tempDir = $_SERVER['DOCUMENT_ROOT'] . '/upload/tmp/';
+        if (!is_dir($tempDir)) {
+            if (!mkdir($tempDir, 0777, true)) {
+                return false;
+            }
+        }
+
+        $tempPath = $tempDir . $prefix . '_' . md5(uniqid()) . '.' . $ext;
+        if (file_put_contents($tempPath, $decoded) === false) {
+            return false;
+        }
 
         $arFile = CFile::MakeFileArray($tempPath);
+        if (!$arFile) {
+            @unlink($tempPath);
+            return false;
+        }
+
         $arFile['MODULE_ID'] = 'iblock';
         $fileId = CFile::SaveFile($arFile, 'iblock');
         @unlink($tempPath);
+
         return $fileId;
     }
 
