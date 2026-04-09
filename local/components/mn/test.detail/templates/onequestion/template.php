@@ -8,13 +8,15 @@ $test = $arResult['TEST'] ?? [];
 $questions = $arResult['QUESTIONS'] ?? [];
 
 foreach ($questions as &$q) {
-    $q['PICTURE_PATH'] = $q['PREVIEW_PICTURE'] ? CFile::GetPath($q['PREVIEW_PICTURE']) : '';
+    // Используем свойство IMAGE вместо PREVIEW_PICTURE
+    $imageId = $q['PROPERTY_IMAGE_VALUE'] ?? 0;
+    $q['PICTURE_PATH'] = $imageId ? CFile::GetPath($imageId) : '';
 }
 unset($q);
 
 $totalQuestions = count($questions);
 
-// ВАЖНО: определяем данные ДО подключения JS
+// Формируем данные один раз
 $questionsJson = json_encode($questions, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 ?>
 <script>
@@ -25,14 +27,15 @@ $questionsJson = json_encode($questions, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 </script>
 
 <?
-// Теперь подключаем JS (он будет использовать уже готовую переменную)
+// Подключаем JS
 $asset = Asset::getInstance();
 $asset->addJs('/assets/js/modules/testdetail.js');
 
 ?>
 <div class="onequestion-test"
      data-total="<?= $totalQuestions ?>"
-     data-questions='<?= json_encode($questions, JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?>'>
+     data-questions='<?= $questionsJson ?>'>
+    <!-- остальная верстка без изменений -->
     <div class="onequestion-test__intro js-test-intro">
         <?php if (!empty($test['PREVIEW_PICTURE'])): ?>
             <div class="onequestion-test__image">
@@ -63,10 +66,3 @@ $asset->addJs('/assets/js/modules/testdetail.js');
         <p class="onequestion-test__complete-text">Спасибо за уделенное время.</p>
     </div>
 </div>
-
-<script>
-    console.log('Raw PHP questions:', <?= json_encode($questions, JSON_UNESCAPED_UNICODE) ?>);
-    window.onequestionData = {
-        questions: <?= json_encode($questions, JSON_UNESCAPED_UNICODE) ?>
-    };
-</script>

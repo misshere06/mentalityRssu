@@ -86,9 +86,37 @@ class MnTestDetailComponent extends CBitrixComponent
             ],
             false,
             false,
-            ['ID', 'NAME', 'PREVIEW_TEXT', 'DETAIL_TEXT']
+            [
+                'ID', 'NAME', 'PREVIEW_TEXT', 'DETAIL_TEXT',
+                'PREVIEW_PICTURE', 'DETAIL_PICTURE',
+                'PROPERTY_CATEGORY', 'PROPERTY_DESCRIPTION', 'PROPERTY_INSTRUCTION'
+            ]
         );
-        return $res->GetNext();
+        $test = $res->GetNext();
+        if (!$test) return null;
+
+        // Получаем название категории, если она задана
+        $test['CATEGORY_NAME'] = '';
+        if (!empty($test['PROPERTY_CATEGORY_VALUE'])) {
+            $catRes = \CIBlockElement::GetList(
+                [],
+                ['ID' => $test['PROPERTY_CATEGORY_VALUE'], 'IBLOCK_ID' => 5], // ID инфоблока категорий = 5
+                false,
+                false,
+                ['NAME']
+            );
+            if ($cat = $catRes->GetNext()) {
+                $test['CATEGORY_NAME'] = $cat['NAME'];
+            }
+        }
+
+        // Приоритет: DETAIL_PICTURE > PREVIEW_PICTURE
+        $test['PICTURE'] = $test['PREVIEW_PICTURE'];
+        if ($test['DETAIL_PICTURE']) {
+            $test['PICTURE'] = $test['DETAIL_PICTURE'];
+        }
+
+        return $test;
     }
 
     protected function getQuestionsWithOptions()
@@ -103,11 +131,13 @@ class MnTestDetailComponent extends CBitrixComponent
             ],
             false,
             false,
-            ['ID', 'NAME', 'PREVIEW_PICTURE', 'PROPERTY_QUESTION_TYPE']
+            ['ID', 'NAME', 'PROPERTY_QUESTION_TYPE', 'PROPERTY_IMAGE'] // вместо PREVIEW_PICTURE
         );
 
         while ($q = $res->GetNext()) {
             $q['OPTIONS'] = $this->getOptions($q['ID']);
+
+            $q['IMAGE_PATH'] = $q['PROPERTY_IMAGE_VALUE'] ? CFile::GetPath($q['PROPERTY_IMAGE_VALUE']) : '';
             $questions[] = $q;
         }
         return $questions;

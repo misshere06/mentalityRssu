@@ -2,6 +2,7 @@
 import { initHeader } from './modules/header';
 import { initTestcreator } from './modules/testcreator';
 import { initTesteditor } from './modules/testedit';
+import { initUsersList } from './modules/userlist'; // <-- Добавлен импорт
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Application starting...');
@@ -16,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Initializing test creator');
         initTestcreator();
     }
+
+    // Инициализация компонента списка пользователей, если он присутствует на странице
+    initUsersList();
 
     console.log('Application initialized successfully!');
 });
