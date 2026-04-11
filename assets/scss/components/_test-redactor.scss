@@ -1,0 +1,178 @@
+// Переменные из проекта
+$primary-blue: #1458e1;
+$secondary-blue: #2980b9;
+$accent-green: #2ecc71;
+$dark-gray: #263a55;
+$medium-gray: #7f8c8d;
+$light-gray: #d4d4df;
+$bg_color: #f7f9fc;
+$white: #ffffff;
+$block_border-radius: 12px;
+$block_border-shadow: 0 12px 25px 2px rgba(186, 194, 219, .1);
+$hoverblock_border-shadow: 0 2px 3px 2px rgba(127, 140, 141, 0.1);
+$border-radius: 4px;
+
+.test-redactor {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    background: $white;
+    padding: 1rem 1.5rem;
+    border-radius: $block_border-radius;
+    box-shadow: $block_border-shadow;
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    color: $primary-blue;
+  }
+
+  &__create-btn, &__filter-btn {
+    background: $accent-green;
+    color: $white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: $block_border-radius;
+    cursor: pointer;
+    &:hover { background: darken($accent-green, 10%); }
+  }
+
+  &__filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: $white;
+    padding: 1rem;
+    border-radius: $block_border-radius;
+    input, select {
+      padding: 0.5rem;
+      border: 1px solid $light-gray;
+      border-radius: $border-radius;
+    }
+  }
+
+  &__table {
+    width: 100%;
+    background: $white;
+    border-collapse: collapse;
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid $light-gray;
+      text-align: left;
+    }
+    th { background: $bg_color; }
+  }
+
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    &.status-published { background: $accent-green; color: white; }
+    &.status-draft { background: $medium-gray; color: white; }
+  }
+}
+
+// Стили для страницы редактирования (префикс .test-editor)
+.test-editor {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    background: $white;
+    border-radius: $block_border-radius;
+    box-shadow: $block_border-shadow;
+  }
+
+  &__save-btn {
+    background: $accent-green;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: $block_border-radius;
+    cursor: pointer;
+  }
+
+  &__main-info {
+    background: $white;
+    padding: 1.5rem;
+    border-radius: $block_border-radius;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  &__field {
+    label { display: block; margin-bottom: 0.3rem; font-weight: 600; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid $light-gray;
+      border-radius: $border-radius;
+    }
+  }
+
+  &__questions {
+    background: $white;
+    padding: 1.5rem;
+    border-radius: $block_border-radius;
+    margin-top: 1rem;
+  }
+
+  &__question-card {
+    border: 1px solid $light-gray;
+    border-radius: $block_border-radius;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__question-head {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    .question-text { flex: 2; }
+    .question-type { flex: 1; }
+    .delete-question-btn { background: none; border: none; color: red; cursor: pointer; }
+  }
+
+  &__image-zone {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    .image-preview { width: 70px; height: 70px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; }
+  }
+
+  &__options-area {
+    .options-list {
+      margin-bottom: 1rem;
+      .option-item {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        .option-text { flex: 2; }
+        .option-score { width: 80px; }
+        .remove-option { background: none; border: none; color: #999; cursor: pointer; }
+      }
+    }
+    .add-option-btn { background: none; border: 1px dashed $primary-blue; color: $primary-blue; padding: 0.3rem 1rem; border-radius: 20px; cursor: pointer; }
+  }
+
+  &__add-question {
+    background: $primary-blue;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: $block_border-radius;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+}

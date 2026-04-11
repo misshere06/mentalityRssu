@@ -1,6 +1,5 @@
 <?
 $aMenuLinks = Array(
-
 	Array(
 		"Создать тест", 
 		"/sozdat-test/", 
@@ -15,12 +14,19 @@ $aMenuLinks = Array(
 		Array(), 
 		"" 
 	),
-    Array(
-        "Тесты",
-        "/tests/",
-        Array(),
-        Array(),
-        ""
-    )
+	Array(
+		"Тесты", 
+		"/tests/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"testeditor", 
+		"/testeditor/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
 );
 ?>

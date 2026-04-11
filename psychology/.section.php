@@ -1,0 +1,6 @@
+<?
+$sSectionName = "Психологи";
+$arDirProperties = Array(
+
+);
+?>

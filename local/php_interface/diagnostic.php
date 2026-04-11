@@ -1,6 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
-
+use Bitrix\Highloadblock\HighloadBlockTable;
 if (!CModule::IncludeModule('iblock')) {
     die('Модуль инфоблоков не установлен');
 }
@@ -91,4 +91,57 @@ foreach ($allIblocks as $ibId => $ibData) {
 echo "];\n";
 
 echo '</pre>';
+echo "\n========== HIGHLOAD-БЛОКИ ==========\n";
+
+if (CModule::IncludeModule('highloadblock')) {
+
+
+    $hlblocks = HighloadBlockTable::getList()->fetchAll();
+
+    if (empty($hlblocks)) {
+        echo "Highload-блоки не найдены\n";
+    } else {
+        foreach ($hlblocks as $hlblock) {
+            echo "ID: {$hlblock['ID']}, Название: {$hlblock['NAME']}, Таблица: {$hlblock['TABLE_NAME']}\n";
+
+            // 👇 Получаем пользовательские поля (UF_*) через CUserTypeEntity
+            $userFields = CUserTypeEntity::GetList(
+                ['SORT' => 'ASC', 'ID' => 'ASC'],
+                ['ENTITY_ID' => 'HLBLOCK_' . $hlblock['ID']]
+            );
+
+            $hasFields = false;
+            while ($field = $userFields->Fetch()) {
+                $hasFields = true;
+                $fieldName = $field['FIELD_NAME'];
+                $userType = $field['USER_TYPE_ID'];
+                $title = $field['EDIT_FORM_LABEL']['ru'] ?? $field['FIELD_NAME'];
+                $multiple = $field['MULTIPLE'] === 'Y' ? 'да' : 'нет';
+                $isRequired = $field['MANDATORY'] === 'Y' ? 'да' : 'нет';
+
+                echo "  Поле: {$fieldName}\n";
+                echo "    Заголовок: {$title}\n";
+                echo "    Тип: {$userType}\n";
+                echo "    Множественное: {$multiple}\n";
+                echo "    Обязательное: {$isRequired}\n";
+
+                // Дополнительные параметры для некоторых типов
+                if (!empty($field['SETTINGS']) && is_array($field['SETTINGS'])) {
+                    $settings = array_filter($field['SETTINGS']);
+                    if (!empty($settings)) {
+                        echo "    Настройки: " . json_encode($settings, JSON_UNESCAPED_UNICODE) . "\n";
+                    }
+                }
+                echo "\n";
+            }
+
+            if (!$hasFields) {
+                echo "  (нет пользовательских полей)\n";
+            }
+            echo "\n";
+        }
+    }
+} else {
+    echo "Модуль highloadblock не установлен\n";
+}
 ?>

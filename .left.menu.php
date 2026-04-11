@@ -1,0 +1,25 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Студенты", 
+		"/students/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Психологи", 
+		"/psychology/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Аналитика", 
+		"/analitics/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>
