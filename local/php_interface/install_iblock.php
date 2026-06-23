@@ -1,11 +1,19 @@
 <?php
+use Bitrix\Highloadblock\HighloadBlockTable;
+use Bitrix\Main\Entity\Base;
+use Bitrix\Main\UserFieldTable;
 require_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/main/include/prolog_before.php');
 
 if (!CModule::IncludeModule('iblock')) {
     die('Модуль инфоблоков не установлен');
 }
 
-// Создание типа инфоблока, если его нет
+if (!CModule::IncludeModule('highloadblock')) {
+    echo "Модуль highloadblock не установлен. Highload-блок для результатов не будет создан.<br>";
+}
+
+// ---------------------- Функции ----------------------
+
 function createIBlockType($typeId, $name) {
     $res = CIBlockType::GetByID($typeId);
     if ($res->Fetch()) {
@@ -39,10 +47,12 @@ function createIBlockType($typeId, $name) {
     return true;
 }
 
-// Создаём тип 'tests'
-createIBlockType('tests', 'Тесты');
+function getIBlockIdByCode($code) {
+    $res = CIBlock::GetList([], ['CODE' => $code]);
+    if ($ib = $res->Fetch()) return $ib['ID'];
+    return 0;
+}
 
-// Функция создания инфоблока
 function createIBlock($code, $name, $type = 'tests', $properties = []) {
     $ib = new CIBlock;
     $res = CIBlock::GetList([], ['CODE' => $code]);
@@ -56,7 +66,7 @@ function createIBlock($code, $name, $type = 'tests', $properties = []) {
         'NAME' => $name,
         'CODE' => $code,
         'IBLOCK_TYPE_ID' => $type,
-        'SITE_ID' => ['s1'], // если сайт не s1, замените
+        'SITE_ID' => ['s1'], // замените при необходимости
         'GROUP_ID' => ['2' => 'R'],
         'VERSION' => 2,
         'WORKFLOW' => 'N',
@@ -72,7 +82,6 @@ function createIBlock($code, $name, $type = 'tests', $properties = []) {
 
     echo "Создан инфоблок {$name} (ID={$id})<br>";
 
-    // Добавление свойств
     foreach ($properties as $propCode => $propData) {
         $prop = new CIBlockProperty;
         $propRes = CIBlockProperty::GetList([], ['IBLOCK_ID' => $id, 'CODE' => $propCode]);
@@ -111,13 +120,86 @@ function createIBlock($code, $name, $type = 'tests', $properties = []) {
     return $id;
 }
 
-function getIBlockIdByCode($code) {
-    $res = CIBlock::GetList([], ['CODE' => $code]);
-    if ($ib = $res->Fetch()) return $ib['ID'];
-    return 0;
+function createHighloadBlock($name, $tableName, $fields = []) {
+    if (!CModule::IncludeModule('highloadblock')) {
+        return false;
+    }
+
+    $hlblock = HighloadBlockTable::getList(['filter' => ['NAME' => $name]])->fetch();
+    if ($hlblock) {
+        echo "Highload-блок {$name} уже существует, ID={$hlblock['ID']}<br>";
+        return $hlblock['ID'];
+    }
+
+    $result = HighloadBlockTable::add([
+        'NAME' => $name,
+        'TABLE_NAME' => $tableName,
+    ]);
+    if (!$result->isSuccess()) {
+        echo "Ошибка создания Highload-блока {$name}: " . implode(', ', $result->getErrorMessages()) . "<br>";
+        return false;
+    }
+    $hlblockId = $result->getId();
+    echo "Создан Highload-блок {$name} (ID={$hlblockId})<br>";
+
+    $hlblock = HighloadBlockTable::getById($hlblockId)->fetch();
+    $entity = HighloadBlockTable::compileEntity($hlblock);
+    $entityClass = $entity->getDataClass();
+
+    foreach ($fields as $fieldCode => $fieldData) {
+        $existingField = UserFieldTable::getList([
+            'filter' => [
+                'ENTITY_ID' => 'HLBLOCK_' . $hlblockId,
+                'FIELD_NAME' => $fieldCode,
+            ],
+            'limit' => 1,
+        ])->fetch();
+        if ($existingField) {
+            echo "&nbsp;&nbsp;Поле {$fieldCode} уже существует<br>";
+            continue;
+        }
+
+        $arField = [
+            'ENTITY_ID' => 'HLBLOCK_' . $hlblockId,
+            'FIELD_NAME' => $fieldCode,
+            'USER_TYPE_ID' => $fieldData['TYPE'],
+            'XML_ID' => $fieldCode,
+            'SORT' => $fieldData['SORT'] ?? 100,
+            'MULTIPLE' => ($fieldData['MULTIPLE'] ?? 'N') === 'Y' ? 'Y' : 'N',
+            'MANDATORY' => ($fieldData['MANDATORY'] ?? 'N') === 'Y' ? 'Y' : 'N',
+            'SHOW_FILTER' => 'Y',
+            'SHOW_IN_LIST' => 'Y',
+            'EDIT_IN_LIST' => 'Y',
+            'IS_SEARCHABLE' => 'N',
+            'SETTINGS' => $fieldData['SETTINGS'] ?? [],
+        ];
+        if (isset($fieldData['EDIT_FORM_LABEL'])) {
+            $arField['EDIT_FORM_LABEL'] = $fieldData['EDIT_FORM_LABEL'];
+        } else {
+            $arField['EDIT_FORM_LABEL'] = ['ru' => $fieldData['NAME'] ?? $fieldCode];
+        }
+        if (isset($fieldData['LIST_COLUMN_LABEL'])) {
+            $arField['LIST_COLUMN_LABEL'] = $fieldData['LIST_COLUMN_LABEL'];
+        } else {
+            $arField['LIST_COLUMN_LABEL'] = ['ru' => $fieldData['NAME'] ?? $fieldCode];
+        }
+
+        $userField = new \CUserTypeEntity();
+        $fieldId = $userField->Add($arField);
+        if ($fieldId) {
+            echo "&nbsp;&nbsp;+ поле {$fieldCode} (ID={$fieldId})<br>";
+        } else {
+            echo "&nbsp;&nbsp;! ошибка добавления поля {$fieldCode}<br>";
+        }
+    }
+
+    return $hlblockId;
 }
 
-// Создание инфоблоков
+// ---------------------- 1. Инфраструктура тестов ----------------------
+echo "<h3>Создание структуры тестов</h3>";
+createIBlockType('tests', 'Тесты');
+
 $categoriesId = createIBlock('test_categories', 'Категории тестов', 'tests', []);
 $testsId = createIBlock('psycho_tests', 'Психологические тесты', 'tests', [
     'CATEGORY' => [
@@ -156,10 +238,154 @@ $optionsId = createIBlock('answer_options', 'Варианты ответов', '
     'SCORE' => ['NAME' => 'Баллы', 'TYPE' => 'N'],
 ]);
 
-echo "<hr>Готово! ID инфоблоков:<br>";
+// ---------------------- 2. Структура учебного заведения ----------------------
+echo "<h3>Создание структуры учебного заведения</h3>";
+createIBlockType('edu_structure', 'Структура учебного заведения');
+
+$cafedrasId = createIBlock('cafedras', 'Кафедры', 'edu_structure', []);
+$specialtiesId = createIBlock('specialties', 'Специальности', 'edu_structure', [
+    'CAFEDRA' => [
+        'NAME' => 'Кафедра',
+        'TYPE' => 'E',
+        'LINK_IBLOCK_CODE' => 'cafedras',
+    ],
+]);
+$groupsId = createIBlock('groups', 'Группы', 'edu_structure', [
+    'SPECIALTY' => [
+        'NAME' => 'Специальность',
+        'TYPE' => 'E',
+        'LINK_IBLOCK_CODE' => 'specialties',
+    ],
+    'CAFEDRA' => [
+        'NAME' => 'Кафедра',
+        'TYPE' => 'E',
+        'LINK_IBLOCK_CODE' => 'cafedras',
+    ],
+]);
+
+// ---------------------- 3. Highload-блок результатов ----------------------
+echo "<h3>Highload-блок результатов тестов</h3>";
+$hlFields = [
+    'UF_USER_ID' => [
+        'NAME' => 'ID пользователя',
+        'TYPE' => 'integer',
+        'MANDATORY' => 'Y',
+        'SETTINGS' => ['SIZE' => 40],
+    ],
+    'UF_TEST_ID' => [
+        'NAME' => 'ID теста',
+        'TYPE' => 'integer',
+        'MANDATORY' => 'Y',
+        'SETTINGS' => ['SIZE' => 40],
+    ],
+    'UF_CURRENT_QUESTION' => [
+        'NAME' => 'Индекс текущего вопроса',
+        'TYPE' => 'integer',
+        'MANDATORY' => 'N',
+        'SETTINGS' => ['SIZE' => 40],
+    ],
+    'UF_ANSWERS' => [
+        'NAME' => 'Ответы (JSON)',
+        'TYPE' => 'string',
+        'MANDATORY' => 'N',
+        'SETTINGS' => ['SIZE' => 1000, 'ROWS' => 1],
+    ],
+    'UF_STATUS' => [
+        'NAME' => 'Статус',
+        'TYPE' => 'string',
+        'MANDATORY' => 'Y',
+        'SETTINGS' => ['SIZE' => 20, 'ROWS' => 1],
+    ],
+    'UF_SCORE' => [
+        'NAME' => 'Баллы',
+        'TYPE' => 'double',
+        'MANDATORY' => 'N',
+        'SETTINGS' => ['PRECISION' => 4, 'SIZE' => 20],
+    ],
+    'UF_DATE_UPDATE' => [
+        'NAME' => 'Дата обновления',
+        'TYPE' => 'datetime',
+        'MANDATORY' => 'N',
+        'SETTINGS' => [
+            'DEFAULT_VALUE' => ['TYPE' => 'NOW', 'VALUE' => ''],
+            'USE_SECOND' => 'N',
+            'USE_TIMEZONE' => 'N',
+        ],
+    ],
+];
+$hlId = createHighloadBlock('UserTestResults', 'user_test_results', $hlFields);
+
+// ---------------------- 4. Пользовательские поля для USER ----------------------
+echo "<h3>Добавление пользовательских полей</h3>";
+$oUserTypeEntity = new CUserTypeEntity();
+
+$userFields = [
+    'UF_CAFEDRA' => [
+        'LABEL' => 'Кафедра',
+        'IBLOCK_ID' => $cafedrasId,
+        'SORT' => 100,
+    ],
+    'UF_SPECIALNOST' => [
+        'LABEL' => 'Специальность',
+        'IBLOCK_ID' => $specialtiesId,
+        'SORT' => 200,
+    ],
+    'UF_GROUP' => [
+        'LABEL' => 'Группа',
+        'IBLOCK_ID' => $groupsId,
+        'SORT' => 300,
+    ],
+];
+
+foreach ($userFields as $fieldName => $data) {
+    $res = CUserTypeEntity::GetList([], ['ENTITY_ID' => 'USER', 'FIELD_NAME' => $fieldName]);
+    if ($res->Fetch()) {
+        echo "&nbsp;&nbsp;Поле пользователя {$fieldName} уже существует<br>";
+        continue;
+    }
+
+    $arField = [
+        'ENTITY_ID' => 'USER',
+        'FIELD_NAME' => $fieldName,
+        'USER_TYPE_ID' => 'iblock_element',
+        'XML_ID' => $fieldName,
+        'SORT' => $data['SORT'],
+        'MULTIPLE' => 'N',
+        'MANDATORY' => 'N',
+        'SHOW_FILTER' => 'Y',
+        'SHOW_IN_LIST' => 'Y',
+        'EDIT_IN_LIST' => 'Y',
+        'IS_SEARCHABLE' => 'N',
+        'SETTINGS' => [
+            'IBLOCK_ID' => $data['IBLOCK_ID'],
+            'DEFAULT_VALUE' => '',
+            'DISPLAY' => 'LIST',
+            'LIST_HEIGHT' => 5,
+        ],
+        'EDIT_FORM_LABEL' => ['ru' => $data['LABEL']],
+        'LIST_COLUMN_LABEL' => ['ru' => $data['LABEL']],
+    ];
+
+    $id = $oUserTypeEntity->Add($arField);
+    if ($id) {
+        echo "&nbsp;&nbsp;+ поле {$fieldName} (ID={$id})<br>";
+    } else {
+        echo "&nbsp;&nbsp;! ошибка добавления поля {$fieldName}<br>";
+    }
+}
+
+// ---------------------- Итоги ----------------------
+echo "<hr><h3>Готово!</h3>";
+echo "<b>Тесты:</b><br>";
 echo "Категории: {$categoriesId}<br>";
 echo "Тесты: {$testsId}<br>";
 echo "Вопросы: {$questionsId}<br>";
 echo "Варианты: {$optionsId}<br>";
-echo "Скопируйте эти ID в параметры компонента: IBLOCK_CATEGORIES_ID, IBLOCK_TESTS_ID, IBLOCK_QUESTIONS_ID, IBLOCK_OPTIONS_ID";
+echo "Highload-блок результатов: " . ($hlId ? "ID={$hlId}" : "не создан") . "<br>";
+echo "<b>Структура учебного заведения:</b><br>";
+echo "Кафедры: {$cafedrasId}<br>";
+echo "Специальности: {$specialtiesId}<br>";
+echo "Группы: {$groupsId}<br>";
+echo "<b>Поля пользователя:</b> UF_CAFEDRA, UF_SPECIALNOST, UF_GROUP (привязаны к соответствующим инфоблокам)<br>";
+echo "<br>Скопируйте ID в параметры компонентов.";
 ?>

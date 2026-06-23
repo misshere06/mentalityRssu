@@ -2,20 +2,13 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Студенты");
 ?>Студенты
-<?php
-$APPLICATION->IncludeComponent(
-	"mn:users.list", 
-	".default", 
-	array(
-		"GROUPS_IDS" => array(
-			0 => "8",
-		),
-		"USERS_PER_PAGE" => "20",
+<?$APPLICATION->IncludeComponent(
+	"mn:users.list",
+	"",
+	Array(
 		"CACHE_TIME" => "3600",
-		"COMPONENT_TEMPLATE" => ".default",
-		"CACHE_TYPE" => "N"
-	),
-	false
-);
-?>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+		"CACHE_TYPE" => "N",
+		"GROUPS_IDS" => array("6"),
+		"USERS_PER_PAGE" => "20"
+	)
+);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

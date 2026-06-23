@@ -41,18 +41,31 @@ class MnTestListComponent extends CBitrixComponent
             $filter['PROPERTY_CATEGORY'] = $this->arParams['CATEGORY_ID'];
         }
 
-
         $res = \CIBlockElement::GetList(
             ['SORT' => 'ASC', 'NAME' => 'ASC'],
             $filter,
             false,
             $nav,
-            ['ID', 'NAME', 'CODE', 'PREVIEW_TEXT', 'DETAIL_PAGE_URL', 'PROPERTY_CATEGORY']
+            ['ID', 'NAME', 'CODE', 'PREVIEW_TEXT', 'PREVIEW_PICTURE', 'DETAIL_PAGE_URL', 'PROPERTY_CATEGORY', 'PROPERTY_DESCRIPTION', 'PROPERTY_INSTRUCTION']
         );
 
         $items = [];
         while ($item = $res->GetNext()) {
             $item['DETAIL_URL'] = str_replace('#ELEMENT_ID#', $item['ID'], $this->arParams['DETAIL_URL']);
+            $item['PREVIEW_PICTURE_SRC'] = $item['PREVIEW_PICTURE'] ? CFile::GetPath($item['PREVIEW_PICTURE']) : '';
+
+            // Добавляем свойства описания и инструкции
+            $item['DESCRIPTION'] = $item['PROPERTY_DESCRIPTION_VALUE'] ?? '';
+            $item['INSTRUCTION'] = $item['PROPERTY_INSTRUCTION_VALUE'] ?? '';
+
+            // Категория
+            if (!empty($item['PROPERTY_CATEGORY_VALUE'])) {
+                $cat = CIBlockElement::GetByID($item['PROPERTY_CATEGORY_VALUE']);
+                if ($catElem = $cat->GetNext()) {
+                    $item['CATEGORY_NAME'] = $catElem['NAME'];
+                }
+            }
+
             $items[] = $item;
         }
 

@@ -2,7 +2,8 @@
 import { initHeader } from './modules/header';
 import { initTestcreator } from './modules/testcreator';
 import { initTesteditor } from './modules/testedit';
-import { initUsersList } from './modules/userlist'; // <-- Добавлен импорт
+import { initUsersList } from './modules/userlist';
+import './modules/testlistcard'; // <-- Просто импорт (выполнит IIFE-код)
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Application starting...');
