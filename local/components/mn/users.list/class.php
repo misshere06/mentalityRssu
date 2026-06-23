@@ -74,7 +74,8 @@ class UsersListComponent extends CBitrixComponent implements Controllerable
         $query = UserTable::query()
             ->setSelect([
                 'ID', 'NAME', 'LAST_NAME', 'SECOND_NAME', 'PERSONAL_PHOTO',
-                'UF_ROLE', 'UF_CAFEDRA', 'UF_SPECIALNOST', 'UF_GROUP'
+                'UF_ROLE', 'UF_CAFEDRA', 'UF_SPECIALNOST', 'UF_GROUP',
+                'UF_ABOUT', 'UF_EXPERIENCE', 'UF_SPECIALIZATION', 'UF_ACCEPT_REQUESTS'
             ])
             ->whereIn('ID', $userIds)
             ->setOffset($nav->getOffset())
@@ -113,6 +114,10 @@ class UsersListComponent extends CBitrixComponent implements Controllerable
                 'SPECIALTY' => $refs['specialties'][$user['UF_SPECIALNOST']] ?? $user['UF_SPECIALNOST'] ?? '',
                 'GROUP' => $refs['groups'][$user['UF_GROUP']] ?? $user['UF_GROUP'] ?? '',
                 'PHOTO' => $photoPath ?: '/local/templates/.default/images/no_photo.png',
+                'ABOUT' => $user['UF_ABOUT'] ?? '',
+                'EXPERIENCE' => $user['UF_EXPERIENCE'] ?? '',
+                'SPECIALIZATION' => $user['UF_SPECIALIZATION'] ?? '',
+                'ACCEPT_REQUESTS' => $user['UF_ACCEPT_REQUESTS'] ?? 0,
             ];
         }
 

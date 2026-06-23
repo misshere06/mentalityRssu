@@ -4,7 +4,8 @@ import { initTestcreator } from './modules/testcreator';
 import { initTesteditor } from './modules/testedit';
 import { initUsersList } from './modules/userlist';
 import './modules/testlistcard'; // <-- Просто импорт (выполнит IIFE-код)
-
+import { initPsychoList } from './modules/psycholist';
+import { initPsychoRequestList } from './modules/psychorequestlist';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Application starting...');
     initHeader();
@@ -21,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Инициализация компонента списка пользователей, если он присутствует на странице
     initUsersList();
+    initPsychoList();
+    initPsychoRequestList();
 
     console.log('Application initialized successfully!');
 });

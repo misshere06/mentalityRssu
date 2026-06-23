@@ -1,0 +1,117 @@
+// _psycho-request-form.scss
+// Переменные (используйте те же, что в проекте, или определите заново)
+$primary: #2c7be5;
+$border: #e2e8f0;
+$text-dark: #1a2c3e;
+$text-light: #5a6e7f;
+$bg-light: #f8fafc;
+$shadow: 0 4px 12px rgba(0,0,0,0.05);
+$radius: 12px;
+
+.psycho-request-form {
+  max-width: 520px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  border: 1px solid $border;
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .alert-danger {
+    background: #fff5f5;
+    color: #dc3545;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    border: 1px solid #ffc9c9;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      color: $text-dark;
+      font-size: 0.95rem;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid $border;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: $text-dark;
+      background: $bg-light;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 2px rgba($primary, 0.2);
+        background: white;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: $primary;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 1.5rem;
+
+    &:hover {
+      background: darken($primary, 8%);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  p {
+    text-align: center;
+    color: $text-light;
+    margin: 0;
+  }
+}
+
+// Адаптивность
+@media (max-width: 640px) {
+  .psycho-request-form {
+    margin: 1rem;
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+}

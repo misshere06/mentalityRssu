@@ -239,15 +239,129 @@
   }
 }
 
-// Адаптивность
-@media (max-width: $breakpoint-md) {
-  .users-table {
-    display: block;
-    overflow-x: auto;
-  }
+// ==========================================
+// АДАПТИВНАЯ ВЁРСТКА
+// ==========================================
 
-  .user-modal-content {
-    width: 95%;
-    margin-top: 2vh;
+// Планшеты и мелкие экраны (≤ 768px)
+@media (max-width: $breakpoint-md) {
+  .users-list-container {
+    padding: $spacing-unit;
+
+    .users-table {
+      display: block;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+
+      thead {
+        display: none; // скрываем заголовок
+      }
+
+      tbody {
+        display: block;
+        width: 100%;
+      }
+
+      tr {
+        display: block;
+        background: $element_bg_color;
+        border-radius: $border-radius;
+        box-shadow: $block_border-shadow;
+        padding: $spacing-unit;
+        margin-bottom: $spacing-unit;
+        border: 1px solid $gray-border;
+
+        &:hover {
+          background: $element_bg_color;
+        }
+
+        td {
+          display: flex;
+          align-items: baseline;
+          padding: 0.4rem 0;
+          border-bottom: none;
+          border-bottom: 1px dashed $gray-border;
+
+          &:last-child {
+            border-bottom: none;
+            justify-content: flex-end;
+            margin-top: 0.5rem;
+          }
+
+          // Псевдо-лейблы из data-label
+          &::before {
+            content: attr(data-label);
+            font-weight: 600;
+            color: $base_text_gray;
+            width: 40%;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+          }
+
+          // Для ячейки с кнопкой – убираем псевдо-лейбл
+          &:last-child::before {
+            display: none;
+          }
+        }
+      }
+
+      .user-detail-btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    .pagination {
+      .modern-page-navigation {
+        flex-wrap: wrap;
+        justify-content: center;
+        a, span {
+          padding: 0.4rem 0.6rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+// Мобильные телефоны (≤ 576px) – модальное окно
+@media (max-width: $breakpoint-sm) {
+  .user-modal {
+    &-content {
+      width: 98%;
+      margin-top: 1vh;
+      max-height: 95vh;
+      border-radius: $border-radius;
+    }
+
+    &-body {
+      padding: $spacing-unit;
+    }
+
+    &-photo img {
+      width: 80px;
+      height: 80px;
+    }
+
+    h3 {
+      font-size: $base-fontsize;
+    }
+
+    .tests-container .test-item {
+      padding: 0.75rem;
+
+      .test-info {
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    &-close {
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 2rem;
+    }
   }
 }

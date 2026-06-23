@@ -146,7 +146,6 @@ export function initUsersList() {
 
         let html = '';
         data.tests.forEach(test => {
-            // Сервер возвращает STATUS = 'completed'
             const statusText = (test.STATUS === 'completed') ? 'Пройден' : test.STATUS;
             const statusClass = (test.STATUS === 'completed') ? 'status-passed' : 'status-unknown';
             html += `

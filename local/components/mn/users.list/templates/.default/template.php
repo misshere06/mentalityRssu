@@ -25,11 +25,11 @@ $componentPath = $this->getComponent()->getPath();
             <tbody>
             <?php foreach ($arResult['USERS'] as $user): ?>
                 <tr>
-                    <td><?= htmlspecialcharsbx($user['FULL_NAME']) ?></td>
-                    <td><?= htmlspecialcharsbx($user['CAFEDRA']) ?></td>
-                    <td><?= htmlspecialcharsbx($user['ROLE']) ?></td>
-                    <td><?= htmlspecialcharsbx($user['SPECIALTY']) ?></td>
-                    <td><?= htmlspecialcharsbx($user['GROUP']) ?></td>
+                    <td data-label="ФИО"><?= htmlspecialcharsbx($user['FULL_NAME']) ?></td>
+                    <td data-label="Факультет"><?= htmlspecialcharsbx($user['CAFEDRA']) ?></td>
+                    <td data-label="Роль"><?= htmlspecialcharsbx($user['ROLE']) ?></td>
+                    <td data-label="Специальность"><?= htmlspecialcharsbx($user['SPECIALTY']) ?></td>
+                    <td data-label="Учебная группа"><?= htmlspecialcharsbx($user['GROUP']) ?></td>
                     <td>
                         <button class="user-detail-btn" data-user-id="<?= $user['ID'] ?>">
                             Подробнее
