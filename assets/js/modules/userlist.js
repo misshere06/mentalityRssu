@@ -1,19 +1,15 @@
 /**
  * Модуль инициализации компонента списка пользователей с модальным окном тестов
  */
-
-// Имя компонента (меняется только здесь)
 const COMPONENT_NAME = 'mn:users.list';
 
 export function initUsersList() {
     const container = document.querySelector('.users-list-container');
     if (!container) return;
 
-    // Проверяем, не инициализирован ли уже компонент
     if (container.dataset.usersListInitialized === 'true') return;
     container.dataset.usersListInitialized = 'true';
 
-    // Получаем параметры компонента (подписанные параметры и путь)
     const componentData = {
         signedParameters: container.dataset.signedParameters || '',
         componentPath: container.dataset.componentPath || ''
@@ -28,19 +24,16 @@ export function initUsersList() {
     const userNameEl = document.getElementById('modalUserName');
     const testsContainer = document.getElementById('modalTestsContainer');
 
-    // Функция для отображения модального окна
     function showModal() {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
 
-    // Функция для скрытия модального окна
     function hideModal() {
         modal.style.display = 'none';
         document.body.style.overflow = '';
     }
 
-    // Экранирование HTML
     function escapeHtml(text) {
         if (!text) return '';
         const map = {
@@ -53,7 +46,6 @@ export function initUsersList() {
         return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
-    // Установка состояния загрузки
     function setLoading(isLoading) {
         if (!testsContainer) return;
         if (isLoading) {
@@ -61,7 +53,6 @@ export function initUsersList() {
         }
     }
 
-    // Загрузка тестов пользователя через AJAX
     async function loadUserTests(userId) {
         showModal();
         setLoading(true);
@@ -77,7 +68,6 @@ export function initUsersList() {
                 console.log('Успешный ответ сервера:', response);
                 fillModal(response.data);
             } else {
-                // fallback fetch с правильным именем компонента
                 console.warn('Bitrix JS API не загружен, используем fetch');
                 const formData = new FormData();
                 formData.append('action', 'getUserTests');
@@ -126,7 +116,6 @@ export function initUsersList() {
         }
     }
 
-    // Заполнение модального окна данными
     function fillModal(data) {
         setLoading(false);
 
@@ -141,7 +130,6 @@ export function initUsersList() {
             const photoUrl = data.userPhoto || '/local/templates/.default/images/no_photo.png';
             photoImg.src = photoUrl;
             photoImg.onerror = () => {
-                console.warn('Не удалось загрузить изображение:', photoUrl);
                 photoImg.src = '/assets/img/avatar.png';
             };
         }
@@ -158,12 +146,14 @@ export function initUsersList() {
 
         let html = '';
         data.tests.forEach(test => {
-            const statusClass = test.STATUS === 'passed' ? 'status-passed' : 'status-failed';
+            // Сервер возвращает STATUS = 'completed'
+            const statusText = (test.STATUS === 'completed') ? 'Пройден' : test.STATUS;
+            const statusClass = (test.STATUS === 'completed') ? 'status-passed' : 'status-unknown';
             html += `
                 <div class="test-item">
                     <div class="test-name">${escapeHtml(test.NAME)}</div>
                     <div class="test-info">
-                        <span class="test-status ${statusClass}">${escapeHtml(test.STATUS)}</span>
+                        <span class="test-status ${statusClass}">${escapeHtml(statusText)}</span>
                         <span class="test-score">Баллы: ${escapeHtml(test.SCORE)}</span>
                         <span class="test-date">${escapeHtml(test.DATE)}</span>
                     </div>
@@ -173,7 +163,7 @@ export function initUsersList() {
         testsContainer.innerHTML = html;
     }
 
-    // Навешиваем обработчики на кнопки "Подробнее"
+    // Обработчики
     const buttons = container.querySelectorAll('.user-detail-btn');
     buttons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -185,15 +175,9 @@ export function initUsersList() {
         });
     });
 
-    // Закрытие модального окна
-    if (closeBtn) {
-        closeBtn.addEventListener('click', hideModal);
-    }
-    if (overlay) {
-        overlay.addEventListener('click', hideModal);
-    }
+    if (closeBtn) closeBtn.addEventListener('click', hideModal);
+    if (overlay) overlay.addEventListener('click', hideModal);
 
-    // Закрытие по Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.style.display === 'block') {
             hideModal();

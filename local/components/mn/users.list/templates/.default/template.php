@@ -1,7 +1,4 @@
 <?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-/** @var array $arResult */
-/** @var \CBitrixComponentTemplate $this */
-
 \Bitrix\Main\UI\Extension::load("ui.alerts");
 
 $signedParameters = $this->getComponent()->getSignedParameters();
@@ -18,6 +15,7 @@ $componentPath = $this->getComponent()->getPath();
             <thead>
             <tr>
                 <th>ФИО</th>
+                <th>Факультет</th>
                 <th>Роль</th>
                 <th>Специальность</th>
                 <th>Учебная группа</th>
@@ -28,6 +26,7 @@ $componentPath = $this->getComponent()->getPath();
             <?php foreach ($arResult['USERS'] as $user): ?>
                 <tr>
                     <td><?= htmlspecialcharsbx($user['FULL_NAME']) ?></td>
+                    <td><?= htmlspecialcharsbx($user['CAFEDRA']) ?></td>
                     <td><?= htmlspecialcharsbx($user['ROLE']) ?></td>
                     <td><?= htmlspecialcharsbx($user['SPECIALTY']) ?></td>
                     <td><?= htmlspecialcharsbx($user['GROUP']) ?></td>
@@ -52,7 +51,7 @@ $componentPath = $this->getComponent()->getPath();
     <?php endif; ?>
 </div>
 
-<!-- Модальное окно -->
+<!-- Модальное окно (один экземпляр) -->
 <div class="user-modal" id="userModal" style="display: none;">
     <div class="user-modal-overlay"></div>
     <div class="user-modal-content">

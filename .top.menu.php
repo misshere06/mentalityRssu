@@ -8,13 +8,6 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"Список тестов", 
-		"/testlist/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
 		"Тесты", 
 		"/tests/", 
 		Array(), 
@@ -22,7 +15,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"testeditor", 
+		"Редактировать тест", 
 		"/testeditor/", 
 		Array(), 
 		Array(), 

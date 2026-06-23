@@ -40,6 +40,7 @@
         const popupTitle = popup.querySelector('.js-popup-title');
         const popupDesc = popup.querySelector('.js-popup-description');
         const popupInstr = popup.querySelector('.js-popup-instruction');
+        const popupStatus = popup.querySelector('.js-popup-status');
         const closeButtons = popup.querySelectorAll('.js-popup-close');
 
         function closePopup() {
@@ -47,37 +48,51 @@
             document.body.style.overflow = '';
         }
 
-        function openPopup(titleText, description, instruction) {
+        function openPopup(titleText, description, instruction, isCompleted, completedDate) {
             if (popupTitle) popupTitle.textContent = titleText;
             if (popupDesc) popupDesc.innerHTML = description || '';
             if (popupInstr) popupInstr.innerHTML = instruction || '';
+
+            if (popupStatus) {
+                if (isCompleted) {
+                    const formattedDate = completedDate
+                        ? new Date(completedDate.replace(' ', 'T')).toLocaleString('ru-RU', {
+                            day: '2-digit', month: '2-digit', year: 'numeric',
+                            hour: '2-digit', minute: '2-digit'
+                        })
+                        : '';
+                    popupStatus.innerHTML = `<strong style="color: ${'#28a745'};">Пройден</strong>` +
+                        (formattedDate ? ` — ${formattedDate}` : '');
+                } else {
+                    popupStatus.innerHTML = '<strong style="color: #dc3545;">Не пройден</strong>';
+                }
+            }
+
             popup.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
-        // Закрытие по клику на оверлей или крестик
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', closePopup);
-        });
+        closeButtons.forEach(btn => btn.addEventListener('click', closePopup));
 
-        // Закрытие по Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && popup.style.display === 'flex') {
                 closePopup();
             }
         });
 
-        // Обработчики кнопок "Подробнее"
         const detailButtons = container.querySelectorAll('.js-show-detail');
         detailButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 const description = this.dataset.description || '';
                 const instruction = this.dataset.instruction || '';
-                // Заголовок берём из названия теста — можно из соседнего h2
+                const isCompleted = this.dataset.completed === '1';
+                const completedDate = this.dataset.completedDate || '';
+
                 const itemTitle = this.closest('.test-list-cards__item')
                     ?.querySelector('.test-list-cards__item-title a')
                     ?.textContent || 'Подробнее';
-                openPopup(itemTitle, description, instruction);
+
+                openPopup(itemTitle, description, instruction, isCompleted, completedDate);
             });
         });
     }
