@@ -5,7 +5,7 @@ $aMenuLinks = Array(
         "/sozdat-test/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg"
+            "ICON_SVG" => "/assets/img/svg/arrow-basic8.svg"
             // Если нужно скрыть от гостей – добавьте "HIDE_FOR_GUEST" => "Y"
         ),
         "CSite::InGroup(array(1,8))"
@@ -15,7 +15,7 @@ $aMenuLinks = Array(
         "/tests/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg",
+            "ICON_SVG" => "/assets/img/svg/arrow-basic2.svg",
             "HIDE_FOR_GUEST" => "Y"
         ),
         "CSite::InGroup(array(6))"
@@ -25,7 +25,7 @@ $aMenuLinks = Array(
         "/testeditor/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg",
+            "ICON_SVG" => "/assets/img/svg/arrow-basic3.svg",
             "HIDE_FOR_GUEST" => "Y"
         ),
         "CSite::InGroup(array(1,8))"
@@ -35,7 +35,7 @@ $aMenuLinks = Array(
         "https://sdo.rgsu.net/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg"),
+            "ICON_SVG" => "/assets/img/svg/arrow-basic4.svg"),
         "" // условие пустое – показывать всем, но скрыть от гостей через HIDE_FOR_GUEST (если нужно)
     ),
     Array(
@@ -43,7 +43,7 @@ $aMenuLinks = Array(
         "https://rgsu.net/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg"
+            "ICON_SVG" => "/assets/img/svg/arrow-basic5.svg"
             // HIDE_FOR_GUEST не задан – показывать всем
         ),
         ""
@@ -53,7 +53,7 @@ $aMenuLinks = Array(
         "https://my.rgsu.net/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg"
+            "ICON_SVG" => "/assets/img/svg/arrow-basic6.svg"
         ),
         ""
     ),
@@ -62,7 +62,7 @@ $aMenuLinks = Array(
         "/auth/",
         Array(),
         Array(
-            "ICON_SVG" => "/assets/img/svg/icon-tests.svg"
+            "ICON_SVG" => "/assets/img/svg/arrow-basic7.svg"
         ),
         ""
     )
