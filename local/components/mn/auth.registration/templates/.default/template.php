@@ -38,7 +38,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <?= bitrix_sessid_post() ?>
 
             <?php if ($arResult['MODE'] == 'login'): ?>
-                <!-- Форма входа (без изменений) -->
                 <div class="ui-form-row">
                     <label class="ui-form-label">Логин</label>
                     <input type="text" name="LOGIN" class="ui-ctl-element" required>
@@ -50,9 +49,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="ui-form-row">
                     <button type="submit" class="ui-btn ui-btn-success">Войти</button>
                 </div>
-
             <?php else: ?>
-                <!-- Форма регистрации с новыми полями -->
+                <!-- Текстовые поля без изменений -->
                 <div class="ui-form-row">
                     <label class="ui-form-label">Логин <span class="req">*</span></label>
                     <input type="text" name="LOGIN" class="ui-ctl-element" value="<?= htmlspecialcharsbx($_POST['LOGIN'] ?? '') ?>" required>
@@ -81,47 +79,59 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <label class="ui-form-label">Отчество</label>
                     <input type="text" name="SECOND_NAME" class="ui-ctl-element" value="<?= htmlspecialcharsbx($_POST['SECOND_NAME'] ?? '') ?>">
                 </div>
-                <div class="ui-form-row">
-                    <label class="ui-form-label">Кафедра <span class="req">*</span></label>
-                    <select name="UF_CAFEDRA" class="ui-ctl-element" required>
-                        <option value="">Выберите</option>
-                        <?php foreach ($arResult['CAFEDRAS'] as $id => $name): ?>
-                            <option value="<?= $id ?>" <?= ($_POST['UF_CAFEDRA'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="ui-form-row">
-                    <label class="ui-form-label">Специальность <span class="req">*</span></label>
-                    <select name="UF_SPECIALNOST" class="ui-ctl-element" required>
-                        <option value="">Выберите</option>
-                        <?php foreach ($arResult['SPECIALTIES'] as $id => $name): ?>
-                            <option value="<?= $id ?>" <?= ($_POST['UF_SPECIALNOST'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="ui-form-row">
-                    <label class="ui-form-label">Группа <span class="req">*</span></label>
-                    <select name="UF_GROUP" class="ui-ctl-element" required>
-                        <option value="">Выберите</option>
-                        <?php foreach ($arResult['GROUPS'] as $id => $name): ?>
-                            <option value="<?= $id ?>" <?= ($_POST['UF_GROUP'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="ui-form-row">
-                    <label class="ui-form-label">Роль <span class="req">*</span></label>
-                    <select name="UF_ROLE" class="ui-ctl-element" required>
-                        <option value="">Выберите</option>
-                        <?php foreach ($arResult['ROLES'] as $key => $value): ?>
-                            <option value="<?= $key ?>" <?= ($_POST['UF_ROLE'] ?? '') == $key ? 'selected' : '' ?>><?= htmlspecialcharsbx($value) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+
+                <!-- Кастомные селекты -->
+                <?php
+                $selects = [
+                        ['name' => 'UF_CAFEDRA', 'label' => 'Кафедра', 'options' => $arResult['CAFEDRAS'], 'selected' => $_POST['UF_CAFEDRA'] ?? ''],
+                        ['name' => 'UF_SPECIALNOST', 'label' => 'Специальность', 'options' => $arResult['SPECIALTIES'], 'selected' => $_POST['UF_SPECIALNOST'] ?? ''],
+                        ['name' => 'UF_GROUP', 'label' => 'Группа', 'options' => $arResult['GROUPS'], 'selected' => $_POST['UF_GROUP'] ?? ''],
+                        ['name' => 'UF_ROLE', 'label' => 'Роль', 'options' => $arResult['ROLES'], 'selected' => $_POST['UF_ROLE'] ?? ''],
+                ];
+                foreach ($selects as $select):
+                    $selectId = 'select_' . $select['name'];
+                    ?>
+                    <div class="ui-form-row">
+                        <label class="ui-form-label" for="<?= $selectId ?>"><?= htmlspecialcharsbx($select['label']) ?> <span class="req">*</span></label>
+                        <div class="custom-select" data-name="<?= $select['name'] ?>">
+                            <div class="custom-select__selected" tabindex="0" role="combobox" aria-expanded="false" aria-controls="<?= $selectId ?>_list">
+                                Выберите
+                            </div>
+                            <ul class="custom-select__options" id="<?= $selectId ?>_list" role="listbox">
+                                <li class="custom-select__option" data-value="">Выберите</li>
+                                <?php foreach ($select['options'] as $id => $name): ?>
+                                    <li class="custom-select__option <?= ($select['selected'] == $id) ? 'active' : '' ?>" data-value="<?= $id ?>">
+                                        <?= htmlspecialcharsbx($name) ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <select name="<?= $select['name'] ?>" class="ui-ctl-element custom-select__native" required hidden>
+                                <option value="">Выберите</option>
+                                <?php foreach ($select['options'] as $id => $name): ?>
+                                    <option value="<?= $id ?>" <?= ($select['selected'] == $id) ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <!-- Загрузка фото -->
                 <div class="ui-form-row">
                     <label class="ui-form-label">Фото профиля</label>
-                    <input type="file" name="PROFILE_PHOTO" accept="image/jpeg,image/png">
-                    <small>JPG или PNG, до 5 МБ</small>
+                    <div class="auth-photo-upload">
+                        <input type="file"
+                               id="profile_photo_input"
+                               name="PROFILE_PHOTO"
+                               accept="image/jpeg,image/png"
+                               class="auth-photo-upload__input">
+                        <label for="profile_photo_input" class="auth-photo-upload__label">
+                            Выбрать фото
+                        </label>
+                        <span id="profile_photo_name" class="auth-photo-upload__filename"></span>
+                        <small>JPG или PNG, до 5 МБ</small>
+                    </div>
                 </div>
+
                 <div class="ui-form-row">
                     <button type="submit" class="ui-btn ui-btn-success">Зарегистрироваться</button>
                 </div>
@@ -130,12 +140,74 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <?php endif; ?>
 </div>
 
-<style>
-    .req { color: red; }
-    .custom-auth-wrapper { max-width: 500px; margin: 0 auto; }
-    .custom-auth-tabs { display: flex; margin-bottom: 20px; }
-    .custom-auth-tab { flex: 1; text-align: center; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; border-radius: 5px 5px 0 0; }
-    .custom-auth-tab.active { background: #fff; border: 1px solid #ddd; border-bottom: none; }
-    .custom-auth-form .ui-form-row { margin-bottom: 15px; }
-    .custom-auth-form .ui-ctl-element { width: 100%; }
-</style>
+<script>
+    (function() {
+        // Кастомные селекты
+        document.querySelectorAll('.custom-select').forEach(select => {
+            const nativeSelect = select.querySelector('.custom-select__native');
+            const selected = select.querySelector('.custom-select__selected');
+            const options = select.querySelector('.custom-select__options');
+            const optionItems = options.querySelectorAll('.custom-select__option');
+
+            // Инициализация текста из сохранённого значения
+            const currentValue = nativeSelect.value;
+            if (currentValue) {
+                const activeOption = options.querySelector(`[data-value="${currentValue}"]`);
+                if (activeOption) {
+                    selected.textContent = activeOption.textContent;
+                    activeOption.classList.add('active');
+                }
+            }
+
+            // Открытие / закрытие
+            selected.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = options.style.display === 'block';
+                closeAllSelects();
+                if (!isOpen) {
+                    options.style.display = 'block';
+                    selected.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // Выбор опции
+            optionItems.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const value = this.getAttribute('data-value');
+                    nativeSelect.value = value;
+                    selected.textContent = this.textContent;
+                    optionItems.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    options.style.display = 'none';
+                    selected.setAttribute('aria-expanded', 'false');
+                    nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            });
+
+            // Закрытие при клике вне
+            document.addEventListener('click', function() {
+                options.style.display = 'none';
+                selected.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        function closeAllSelects() {
+            document.querySelectorAll('.custom-select__options').forEach(opt => opt.style.display = 'none');
+            document.querySelectorAll('.custom-select__selected').forEach(sel => sel.setAttribute('aria-expanded', 'false'));
+        }
+
+        // Отображение имени файла
+        const fileInput = document.getElementById('profile_photo_input');
+        const fileNameDisplay = document.getElementById('profile_photo_name');
+        if (fileInput && fileNameDisplay) {
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                } else {
+                    fileNameDisplay.textContent = '';
+                }
+            });
+        }
+    })();
+</script>

@@ -116,14 +116,14 @@ class RegistrationComponent extends \CBitrixComponent implements Controllerable,
             'UF_ROLE' => trim($this->request->getPost('UF_ROLE')),
         ];
 
-        // Загрузка фото
-        $photoId = null;
-        if (!empty($_FILES['PROFILE_PHOTO']) && $_FILES['PROFILE_PHOTO']['error'] == 0) {
-            $photoId = $this->uploadProfilePhoto();
-            if (!$photoId) {
-                $this->arResult['ERRORS'][] = 'Ошибка загрузки фото. Допустимы JPG, PNG размером до 5 МБ.';
-                return;
-            }
+        // Обработка фото
+        $photo = $this->prepareProfilePhoto();
+        if ($photo === false) {
+            $this->arResult['ERRORS'][] = 'Ошибка загрузки фото. Допустимы JPG, PNG размером до 5 МБ.';
+            return;
+        }
+        if ($photo !== null) {
+            $fields['PERSONAL_PHOTO'] = $photo;   // массив, ядро само сохранит
         }
 
         // Валидация
@@ -133,35 +133,60 @@ class RegistrationComponent extends \CBitrixComponent implements Controllerable,
             return;
         }
 
-        // Все пользователи неактивны до проверки администратором
+        // Все пользователи неактивны
         $fields['ACTIVE'] = 'N';
-        $fields['PERSONAL_PHOTO'] = $photoId; // ID загруженного файла
 
-        // Определяем ID группы Bitrix по роли
+        // Убираем CONFIRM_PASSWORD, он не нужен для CUser::Add
+        unset($fields['CONFIRM_PASSWORD']);
+
+        // Группа по роли
         $groupMap = [
             'Студент' => $this->arParams['STUDENT_GROUP_ID'],
             'Преподаватель' => $this->arParams['TEACHER_GROUP_ID'],
-            'Психолог' => $this->arParams['SOCIAL_WORKER_GROUP_ID'], // Соц.работник
+            'Психолог' => $this->arParams['SOCIAL_WORKER_GROUP_ID'],
         ];
         $userGroupId = $groupMap[$fields['UF_ROLE']] ?? 0;
-
-        // Регистрация
-        $user = new CUser;
-        // Передаём группу в параметрах, если задана
-        $arUserFields = $fields;
         if ($userGroupId > 0) {
-            $arUserFields['GROUP_ID'] = [$userGroupId];
+            $fields['GROUP_ID'] = [$userGroupId];
         }
 
-        $userId = $user->Add($arUserFields);
+        $user = new \CUser;
+        $userId = $user->Add($fields);
         if (intval($userId) > 0) {
             $this->arResult['SUCCESS'] = true;
             $this->arResult['SUCCESS_MESSAGE'] = 'Регистрация прошла успешно. Ваша учётная запись будет активирована администратором после проверки данных.';
-            // Уведомление администратору
             $this->notifyAdminAboutNewUser($userId, $fields);
         } else {
             $this->arResult['ERRORS'][] = $user->LAST_ERROR;
         }
+    }
+
+    /**
+     * Подготовка массива для PERSONAL_PHOTO
+     * @return array|null|false  массив для CUser::Add, null если файл не загружен, false при ошибке
+     */
+    protected function prepareProfilePhoto()
+    {
+        if (empty($_FILES['PROFILE_PHOTO']) || $_FILES['PROFILE_PHOTO']['error'] !== UPLOAD_ERR_OK) {
+            return null; // файл не загружался
+        }
+
+        $file = $_FILES['PROFILE_PHOTO'];
+
+        // Проверка расширения и размера
+        $maxSize = 5 * 1024 * 1024; // 5 МБ
+        $allowedExt = ['jpg', 'jpeg', 'png'];
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowedExt) || $file['size'] > $maxSize) {
+            return false;
+        }
+
+        $photo = \CFile::MakeFileArray($file['tmp_name']);
+        if (!is_array($photo)) {
+            return false;
+        }
+        $photo['name'] = $file['name']; // оригинальное имя
+        return $photo;
     }
 
     /**
