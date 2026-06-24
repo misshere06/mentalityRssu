@@ -81,6 +81,22 @@ class MnTestCreateComponent extends CBitrixComponent
 
         $description = trim($post['description'] ?? '');
         $instruction = trim($post['instruction'] ?? '');
+        $previewText = trim($post['previewText'] ?? '');
+
+        // Файл анонса (если был загружен через FormData)
+        $previewImageFile = null;
+        if (!empty($_FILES['previewImage']) && $_FILES['previewImage']['error'] === UPLOAD_ERR_OK) {
+            $maxSize = 5 * 1024 * 1024; // 5 МБ
+            $allowedExt = ['jpg', 'jpeg', 'png'];
+            $ext = strtolower(pathinfo($_FILES['previewImage']['name'], PATHINFO_EXTENSION));
+            if ($_FILES['previewImage']['size'] > $maxSize) {
+                $this->sendJsonError('Файл анонса слишком большой (максимум 5 МБ).');
+            }
+            if (!in_array($ext, $allowedExt)) {
+                $this->sendJsonError('Недопустимый формат файла анонса. Разрешены JPG, PNG.');
+            }
+            $previewImageFile = $_FILES['previewImage'];
+        }
 
         $questionsData = json_decode($post['questionsData'] ?? '', true);
         if (empty($questionsData)) {
@@ -112,7 +128,7 @@ class MnTestCreateComponent extends CBitrixComponent
             $this->sendJsonError("Недостаточно прав для добавления теста (требуется запись)");
         }
 
-        $testId = $this->createTest($testName, $description, $instruction, $categoryId);
+        $testId = $this->createTest($testName, $description, $instruction, $categoryId, $previewText, $previewImageFile);
         if (!$testId) {
             $errorMsg = $this->errors->current() ? $this->errors->current()->getMessage() : 'Неизвестная ошибка';
             $this->sendJsonError('Ошибка создания теста: ' . $errorMsg);
@@ -147,7 +163,7 @@ class MnTestCreateComponent extends CBitrixComponent
         $this->sendJsonSuccess(['testId' => $testId, 'message' => 'Тест успешно создан!']);
     }
 
-    protected function createTest($name, $description, $instruction, $categoryId)
+    protected function createTest($name, $description, $instruction, $categoryId, $previewText = '', $previewImageFile = null)
     {
         $iblockId = $this->arResult['IBLOCK_TESTS_ID'];
         $el = new CIBlockElement();
@@ -164,12 +180,17 @@ class MnTestCreateComponent extends CBitrixComponent
             'NAME' => $name,
             'CODE' => $code,
             'ACTIVE' => 'Y',
+            'PREVIEW_TEXT' => $previewText,
             'PROPERTY_VALUES' => [
                 'CATEGORY'    => $categoryId,
                 'DESCRIPTION' => $description,
                 'INSTRUCTION' => $instruction,
             ],
         ];
+
+        if ($previewImageFile !== null) {
+            $fields['PREVIEW_PICTURE'] = $previewImageFile;
+        }
 
         $testId = $el->Add($fields);
         if (!$testId) {
