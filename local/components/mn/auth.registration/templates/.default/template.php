@@ -1,4 +1,3 @@
-
 <?php
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 /**
@@ -12,8 +11,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 <div class="custom-auth-wrapper">
     <div class="custom-auth-tabs">
-        <a href="<?= $APPLICATION->GetCurPageParam('', ['mode']) ?>" class="custom-auth-tab <?= $arResult['MODE'] == 'login' ? 'active' : '' ?>">Вход</a>
-        <a href="<?= $APPLICATION->GetCurPageParam('mode=register', ['mode']) ?>" class="custom-auth-tab <?= $arResult['MODE'] == 'register' ? 'active' : '' ?>">Регистрация</a>
+        <a href="<?= $APPLICATION->GetCurPageParam('', ['mode']) ?>"
+           class="custom-auth-tab <?= $arResult['MODE'] == 'login' ? 'active' : '' ?>">
+            Вход
+        </a>
+        <a href="<?= $APPLICATION->GetCurPageParam('mode=register', ['mode']) ?>"
+           class="custom-auth-tab <?= $arResult['MODE'] == 'register' ? 'active' : '' ?>">
+            Регистрация
+        </a>
     </div>
 
     <?php if (!empty($arResult['ERRORS'])): ?>
@@ -26,14 +31,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
     <?php if ($arResult['SUCCESS']): ?>
         <div class="ui-alert ui-alert-success">
-            <?= GetMessage('CUSTOM_AUTH_REGISTER_SUCCESS') ?>
+            <?= htmlspecialcharsbx($arResult['SUCCESS_MESSAGE']) ?>
         </div>
     <?php else: ?>
-        <form method="post" action="<?= POST_FORM_ACTION_URI ?>" class="custom-auth-form">
+        <form method="post" action="<?= POST_FORM_ACTION_URI ?>" enctype="multipart/form-data" class="custom-auth-form">
             <?= bitrix_sessid_post() ?>
 
             <?php if ($arResult['MODE'] == 'login'): ?>
-                <!-- Форма авторизации -->
+                <!-- Форма входа (без изменений) -->
                 <div class="ui-form-row">
                     <label class="ui-form-label">Логин</label>
                     <input type="text" name="LOGIN" class="ui-ctl-element" required>
@@ -47,7 +52,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div>
 
             <?php else: ?>
-                <!-- Форма регистрации -->
+                <!-- Форма регистрации с новыми полями -->
                 <div class="ui-form-row">
                     <label class="ui-form-label">Логин <span class="req">*</span></label>
                     <input type="text" name="LOGIN" class="ui-ctl-element" value="<?= htmlspecialcharsbx($_POST['LOGIN'] ?? '') ?>" required>
@@ -77,11 +82,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <input type="text" name="SECOND_NAME" class="ui-ctl-element" value="<?= htmlspecialcharsbx($_POST['SECOND_NAME'] ?? '') ?>">
                 </div>
                 <div class="ui-form-row">
-                    <label class="ui-form-label">Группа <span class="req">*</span></label>
-                    <select name="UF_GROUP" class="ui-ctl-element" required>
+                    <label class="ui-form-label">Кафедра <span class="req">*</span></label>
+                    <select name="UF_CAFEDRA" class="ui-ctl-element" required>
                         <option value="">Выберите</option>
-                        <?php foreach ($arResult['GROUPS'] as $key => $value): ?>
-                            <option value="<?= $key ?>" <?= ($_POST['UF_GROUP'] ?? '') == $key ? 'selected' : '' ?>><?= $value ?></option>
+                        <?php foreach ($arResult['CAFEDRAS'] as $id => $name): ?>
+                            <option value="<?= $id ?>" <?= ($_POST['UF_CAFEDRA'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -89,8 +94,17 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <label class="ui-form-label">Специальность <span class="req">*</span></label>
                     <select name="UF_SPECIALNOST" class="ui-ctl-element" required>
                         <option value="">Выберите</option>
-                        <?php foreach ($arResult['SPECIALTIES'] as $key => $value): ?>
-                            <option value="<?= $key ?>" <?= ($_POST['UF_SPECIALNOST'] ?? '') == $key ? 'selected' : '' ?>><?= $value ?></option>
+                        <?php foreach ($arResult['SPECIALTIES'] as $id => $name): ?>
+                            <option value="<?= $id ?>" <?= ($_POST['UF_SPECIALNOST'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="ui-form-row">
+                    <label class="ui-form-label">Группа <span class="req">*</span></label>
+                    <select name="UF_GROUP" class="ui-ctl-element" required>
+                        <option value="">Выберите</option>
+                        <?php foreach ($arResult['GROUPS'] as $id => $name): ?>
+                            <option value="<?= $id ?>" <?= ($_POST['UF_GROUP'] ?? '') == $id ? 'selected' : '' ?>><?= htmlspecialcharsbx($name) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -99,9 +113,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     <select name="UF_ROLE" class="ui-ctl-element" required>
                         <option value="">Выберите</option>
                         <?php foreach ($arResult['ROLES'] as $key => $value): ?>
-                            <option value="<?= $key ?>" <?= ($_POST['UF_ROLE'] ?? '') == $key ? 'selected' : '' ?>><?= $value ?></option>
+                            <option value="<?= $key ?>" <?= ($_POST['UF_ROLE'] ?? '') == $key ? 'selected' : '' ?>><?= htmlspecialcharsbx($value) ?></option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                <div class="ui-form-row">
+                    <label class="ui-form-label">Фото профиля</label>
+                    <input type="file" name="PROFILE_PHOTO" accept="image/jpeg,image/png">
+                    <small>JPG или PNG, до 5 МБ</small>
                 </div>
                 <div class="ui-form-row">
                     <button type="submit" class="ui-btn ui-btn-success">Зарегистрироваться</button>
@@ -111,26 +130,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <?php endif; ?>
 </div>
 
-<script>
-    BX.ready(function() {
-        <?php if (isset($_SESSION['CUSTOM_REGISTER_SUCCESS'])): ?>
-            <?php $sessionData = $_SESSION['CUSTOM_REGISTER_SUCCESS']; unset($_SESSION['CUSTOM_REGISTER_SUCCESS']); ?>
-            <?php if ($sessionData['ACTIVE'] === 'N'): ?>
-                // Показываем попап с сообщением о необходимости активации
-                BX.UI.Dialogs.MessageBox.alert(
-                    '<?= CUtil::JSEscape($sessionData['MESSAGE']) ?>',
-                    'Регистрация'
-                );
-            <?php else: ?>
-                // Автоматически авторизуем или просто показываем сообщение
-                BX.UI.Dialogs.MessageBox.alert(
-                    'Регистрация прошла успешно! Теперь вы можете войти.',
-                    'Регистрация',
-                    function() {
-                        window.location.href = '<?= $APPLICATION->GetCurPageParam('', ['mode']) ?>';
-                    }
-                );
-            <?php endif; ?>
-        <?php endif; ?>
-    });
-</script>
+<style>
+    .req { color: red; }
+    .custom-auth-wrapper { max-width: 500px; margin: 0 auto; }
+    .custom-auth-tabs { display: flex; margin-bottom: 20px; }
+    .custom-auth-tab { flex: 1; text-align: center; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; border-radius: 5px 5px 0 0; }
+    .custom-auth-tab.active { background: #fff; border: 1px solid #ddd; border-bottom: none; }
+    .custom-auth-form .ui-form-row { margin-bottom: 15px; }
+    .custom-auth-form .ui-ctl-element { width: 100%; }
+</style>

@@ -2,6 +2,7 @@
 use Bitrix\Main\EventManager;
 use Bitrix\Main\UserTable;
 
+
 $eventManager = EventManager::getInstance();
 $eventManager->addEventHandler('main', 'OnBeforeUserRegister', 'onBeforeUserRegisterHandler');
 

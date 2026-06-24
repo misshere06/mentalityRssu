@@ -20,6 +20,34 @@ $aMenuLinks = Array(
 		Array(), 
 		Array(), 
 		"" 
+	),
+	Array(
+		"СДО РГСУ", 
+		"https://sdo.rgsu.net/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Сайт РГСУ", 
+		"https://rgsu.net/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Личный кабинет студента", 
+		"https://my.rgsu.net/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Войти на сайт", 
+		"/auth/", 
+		Array(), 
+		Array(), 
+		"" 
 	)
 );
 ?>

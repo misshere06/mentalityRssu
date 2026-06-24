@@ -6,6 +6,7 @@ import { initUsersList } from './modules/userlist';
 import './modules/testlistcard'; // <-- Просто импорт (выполнит IIFE-код)
 import { initPsychoList } from './modules/psycholist';
 import { initPsychoRequestList } from './modules/psychorequestlist';
+import { initHeroSlider } from './modules/heroSlider';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Application starting...');
     initHeader();
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initUsersList();
     initPsychoList();
     initPsychoRequestList();
+    initHeroSlider();
 
     console.log('Application initialized successfully!');
 });

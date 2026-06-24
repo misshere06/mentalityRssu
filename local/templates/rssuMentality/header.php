@@ -9,7 +9,16 @@ use Bitrix\Main\Page\Asset;
 Asset::getInstance()->addCss('/dist/styles.bundle.css');
 Asset::getInstance()->addJs('/dist/main.bundle.js');
 ?>
-
+<?php
+if (isset($_REQUEST['logout']) && $_REQUEST['logout'] === 'yes') {
+    if (!check_bitrix_sessid()) {
+        die('Ошибка безопасности. Обновите страницу и попробуйте снова.');
+    }
+    global $USER;
+    $USER->Logout();
+    LocalRedirect(SITE_DIR);
+}
+?>
 <!DOCTYPE html>
 <html lang="<?= LANGUAGE_ID ?>">
 <head>
@@ -23,47 +32,72 @@ Asset::getInstance()->addJs('/dist/main.bundle.js');
 <? $APPLICATION->ShowPanel(); ?>
 <div class="app">
     <!-- Burger menu overlay - hidden by default -->
+    <!-- Burger menu overlay - hidden by default -->
     <div class="burger-menu">
         <div class="burger-menu__header">
-            <span class="burger-menu__title">Mentality RGSU</span>
+            <span class="burger-menu__title">Навигация</span>
             <button class="burger-menu__close">×</button>
         </div>
         <div class="burger-menu__content">
-            <div class="burger-menu__search">
-                <input type="search" class="burger-menu__search-input" placeholder="Search...">
-                <button class="burger-menu__search-button">Search</button>
-            </div>
-            <nav class="burger-menu__nav">
-                <a href="#" class="burger-menu__nav-item active">Dashboard</a>
-                <a href="#" class="burger-menu__nav-item">Students</a>
-                <a href="#" class="burger-menu__nav-item">Psychologists</a>
-                <a href="#" class="burger-menu__nav-item">Reports</a>
-            </nav>
-            
+            <!-- Постоянная строка поиска -->
+            <form class="burger-menu__search" action="/search/" method="get">
+                <input type="search" name="q" class="burger-menu__search-input" placeholder="Поиск...">
+                <button type="submit" class="burger-menu__search-button">Найти</button>
+            </form>
 
-            <div class="burger-menu__sidebar-items">
-                <h3 class="burger-menu__section-title">Sidebar Menu</h3>
-                <a href="#" class="burger-menu__sidebar-item active">
-                    <span class="burger-menu__sidebar-icon">🏠</span>
-                    <span class="burger-menu__sidebar-text">Dashboard</span>
-                </a>
-                <a href="#" class="burger-menu__sidebar-item">
-                    <span class="burger-menu__sidebar-icon">👥</span>
-                    <span class="burger-menu__sidebar-text">Students</span>
-                </a>
-                <a href="#" class="burger-menu__sidebar-item">
-                    <span class="burger-menu__sidebar-icon">📊</span>
-                    <span class="burger-menu__sidebar-text">Psychologists</span>
-                </a>
-                <a href="#" class="burger-menu__sidebar-item">
-                    <span class="burger-menu__sidebar-icon">📈</span>
-                    <span class="burger-menu__sidebar-text">Reports</span>
-                </a>
-                <a href="#" class="burger-menu__sidebar-item">
-                    <span class="burger-menu__sidebar-icon">⚙️</span>
-                    <span class="burger-menu__sidebar-text">Settings</span>
-                </a>
-            </div>
+            <!-- Блок пользователя (как в сайдбаре) -->
+            <?$APPLICATION->IncludeComponent(
+                    "bitrix:main.user.link",
+                    "sidebarburger",
+                    array(
+                            "SHOW_ACTIONS" => "Y",   // показывать кнопки действий
+                            "NAME_TEMPLATE" => "#LAST_NAME# #NAME_SHORT#",
+                            "SHOW_LOGIN" => "Y",
+                            "USE_THUMBNAIL_LIST" => "N",
+                            "CACHE_TYPE" => "A",
+                            "CACHE_TIME" => "7200",
+                            "THUMBNAIL_LIST_SIZE" => "30",
+                            "ID" => ""              // не требуется, используем текущего пользователя
+                    ),
+                    false
+            );?>
+            <!-- Верхнее меню (то же, что в хедере) -->
+            <?$APPLICATION->IncludeComponent(
+                    "bitrix:menu",
+                    "headermenuburger",   // новый шаблон
+                    array(
+                            "ROOT_MENU_TYPE" => "left",       // то же меню, что и в header
+                            "MENU_CACHE_TYPE" => "N",
+                            "MENU_CACHE_TIME" => "3600",
+                            "MENU_CACHE_USE_GROUPS" => "Y",
+                            "MAX_LEVEL" => "1",
+                            "CHILD_MENU_TYPE" => "left",
+                            "USE_EXT" => "N",
+                            "DELAY" => "N",
+                            "ALLOW_MULTI_SELECT" => "N"
+                    ),
+                    false
+            );?>
+
+            <!-- Боковое меню (то же, что в сайдбаре) -->
+            <?$APPLICATION->IncludeComponent(
+                    "bitrix:menu",
+                    "sidebarmenuburger", // новый шаблон
+                    array(
+                            "ROOT_MENU_TYPE" => "top",        // то же меню, что и в sidebar
+                            "MENU_CACHE_TYPE" => "N",
+                            "MENU_CACHE_TIME" => "3600",
+                            "MENU_CACHE_USE_GROUPS" => "Y",
+                            "MAX_LEVEL" => "1",
+                            "CHILD_MENU_TYPE" => "left",
+                            "USE_EXT" => "N",
+                            "DELAY" => "N",
+                            "ALLOW_MULTI_SELECT" => "N"
+                    ),
+                    false
+            );?>
+
+
         </div>
     </div>
 

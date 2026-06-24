@@ -1,113 +1,138 @@
 // Main content styles - RGSU style
 .main {
   flex-grow: 1;
-  padding: 1.5rem;
-  background-color: #f8f9fa;
-  margin-top: 60px; /* Account for fixed header height */
+  padding: $spacing-unit * 1.5;
+  background-color: $bg_color;
+  margin-top: 60px; /* учёт фиксированного хедера */
   overflow-y: auto;
   width: 100%;
 
   &__container {
-    max-width: 1200px;
+    max-width: $breakpoint-xl;
     margin: 40px auto;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0 $spacing-unit;
   }
 
   &__title {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 1rem;
+    font-size: 2rem;                    // был 1.5rem
+    color: $dark-gray;
+    margin-bottom: $spacing-unit;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #1a3a6f;
+    border-bottom: 2px solid $base_border;
+    font-weight: 600;
   }
 }
 
-@media (max-width: $breakpoint-sm) {
-  .main {
-    padding: 1rem;
-  }
-
-  .main__container {
-    padding: 0;
-  }
-}
-
-// Info card styles - RGSU style
+// Info card – обводка, тень, улучшенный шрифт
 .info-card {
   background-color: $white;
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  border-radius: $block_border-radius;
+  box-shadow: $block_border-shadow;
+  border: 1px solid $gray-border;
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
-  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.2s, border-color 0.2s;
+
+  &:hover {
+    box-shadow: $hoverblock_border-shadow;
+    border-color: $base_border;
+  }
 
   &__title {
-    font-size: 1.1rem;
-    color: #1a3a6f;
-    margin-bottom: 0.8rem;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid #e0e0e0;
+    font-size: 1.5rem;                  // был 1.25rem
+    color: $primary-blue;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid $gray-border;
+    font-weight: 600;
   }
 
   &__content {
-    color: #333;
-    line-height: 1.5;
-    font-size: 0.9rem;
+    color: $base_text_gray;
+    line-height: 1.7;
+    font-size: 1.125rem;                // 18px – комфортное чтение
   }
 
   &__list {
-    padding-left: 1rem;
-    margin-top: 0.8rem;
+    padding-left: 1.5rem;
+    margin-top: 0.75rem;
 
     li {
-      margin-bottom: 0.4rem;
-      color: #666;
-      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: $medium-gray;
+      font-size: 1rem;
+      line-height: 1.6;
     }
   }
 }
 
-// Stats grid styles - RGSU style
+// Stats grid
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-// Stat card styles - RGSU style
+// Stat card – тоже с обводкой
 .stat-card {
   background-color: $white;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  border-radius: $block_border-radius;
+  box-shadow: $block_border-shadow;
+  border: 1px solid $gray-border;
+  padding: 1.5rem;
   text-align: center;
-  border: 1px solid #e0e0e0;
-  transition: all 0.2s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-color: #c0c0c0;
+    transform: translateY(-3px);
+    box-shadow: $hoverblock_border-shadow;
   }
 
   &__icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.4rem;
-    color: #1a3a6f;
+    font-size: 2.25rem;                 // иконки чуть крупнее
+    margin-bottom: 0.5rem;
+    color: $primary-blue;
   }
 
   &__value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #1a3a6f;
-    margin-bottom: 0.4rem;
+    font-size: 2rem;                    // был 1.75rem
+    font-weight: 700;
+    color: $primary-blue;
+    margin-bottom: 0.25rem;
   }
 
   &__label {
-    color: #666;
-    font-size: 0.8rem;
+    color: $gray-text;
+    font-size: 1rem;                    // был 0.9rem
     font-weight: 500;
+  }
+}
+
+// Адаптив (используем $breakpoint-sm = 768px, как в последнем определении)
+@media (max-width: $breakpoint-sm) {
+  .main {
+    padding: $spacing-unit;
+
+    &__container {
+      padding: 0;
+      margin: 20px auto;
+    }
+
+    &__title {
+      font-size: 1.6rem;
+    }
+  }
+
+  .info-card {
+    padding: 1rem;
+    &__title { font-size: 1.3rem; }
+    &__content { font-size: 1rem; }
+  }
+
+  .stat-card {
+    &__value { font-size: 1.5rem; }
+    &__label { font-size: 0.9rem; }
   }
 }

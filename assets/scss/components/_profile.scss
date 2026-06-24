@@ -1,0 +1,135 @@
+// Профиль пользователя
+.profile-form {
+  .profile-avatar-block {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-avatar__current {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: $bg_color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .profile-avatar__placeholder {
+    color: $gray-text;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .profile-avatar__upload {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-avatar__label {
+    cursor: pointer;
+    color: $primary-blue;
+    text-decoration: underline;
+    font-size: 1rem;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .profile-field {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .profile-field__label {
+    width: 150px;
+    font-weight: 500;
+    color: $base_text_gray;
+    font-size: 1rem;
+  }
+
+  .profile-field__input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid $gray-border;
+    border-radius: $border-radius;
+    font-size: 1rem;
+    background: $white;
+    color: $dark-gray;
+
+    &:focus {
+      border-color: $primary-blue;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($primary-blue, 0.2);
+    }
+  }
+
+  .profile-field__value {
+    flex: 1;
+    font-size: 1rem;
+    padding: 0.6rem 0;
+    color: $dark-gray;
+  }
+
+  .profile-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+
+  .profile-btn {
+    padding: 0.7rem 2rem;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &--save {
+      background-color: $primary-blue;
+      color: $white;
+      &:hover {
+        background-color: darken($primary-blue, 8%);
+      }
+    }
+
+    &--reset {
+      background-color: $light-gray;
+      color: $base_text_gray;
+      &:hover {
+        background-color: darken($light-gray, 5%);
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    .profile-avatar-block {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .profile-field {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .profile-field__label {
+      width: auto;
+    }
+  }
+}
