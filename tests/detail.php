@@ -19,7 +19,7 @@ if (empty($code)) {
 
 <?$APPLICATION->IncludeComponent(
     "mn:test.detail",
-    ".default",
+    "onequestion",
     [
         "IBLOCK_TESTS_ID" => 6,
         "IBLOCK_QUESTIONS_ID" => 7,
@@ -27,7 +27,7 @@ if (empty($code)) {
         "ELEMENT_CODE" => $code,
     ],
     null,
-    ['TEMPLATE' => '.default']
+    ['TEMPLATE' => 'onequestion']
 );?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

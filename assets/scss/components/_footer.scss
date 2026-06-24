@@ -1,91 +1,156 @@
-// Footer styles - RGSU style
+// Footer – современный, адаптивный
 .footer {
-  background-color: #f8f9fa;
-  border-top: 1px solid #e0e0e0;
-  padding: 1.5rem 0;
-  margin-top: auto;
-  color: #333;
+  background-color: #0f1729;   // глубокий тёмно-синий
+  color: #cbd5e1;             // светло-серый текст
+  padding: 3rem 1rem 2rem;
+  font-size: 1rem;            // базовый размер шрифта
+  line-height: 1.5;
 
   &__container {
-    width: 100%;
-    // display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
-    min-width: 0; /* Prevent flex container from expanding */
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
-  &__info {
-    flex: 1;
-    min-width: 0; /* Prevent flex item from expanding */
-  }
-
-  &__title {
-    font-size: 1.1rem;
-    color: #1a3a6f;
-    margin-bottom: 0.3rem;
-    font-weight: 500;
-  }
-
-  &__description {
-    color: #666;
-    font-size: 0.8rem;
-    margin: 0;
-  }
-
-  &__search {
+  &__row {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  &__col {
+    flex: 1 1 280px;         // минимальная ширина колонки перед переносом
+    min-width: 0;
+
+    &--about {
+      flex: 1 1 320px;
+    }
+
+    &--nav {
+      flex: 1 1 200px;
+    }
+
+    &--dev {
+      flex: 1 1 220px;
+    }
+  }
+
+  &__logo-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.5px;
+  }
+
+  &__desc {
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+    color: #94a3b8;
+  }
+
+  &__contacts {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
   }
 
-  &__search-input {
-    padding: 0.4rem 0.6rem;
-    border: 1px solid #c0c0c0;
-    border-radius: 3px;
-    min-width: 180px;
-    font-size: 0.9rem;
-
-    &:focus {
-      outline: none;
-      border-color: #1a3a6f;
-    }
-  }
-
-  &__search-button {
-    padding: 0.4rem 0.8rem;
-    background-color: #1a3a6f;
-    color: $white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.9rem;
-
-    &:hover {
-      background-color: #2a4a7f;
-    }
-  }
-
-  &__nav {
+  &__contact-item {
     display: flex;
-    gap: 1rem;
-    flex: 1;
-    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+
+    a {
+      color: #cbd5e1;
+      text-decoration: none;
+
+      &:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+    }
   }
 
-  &__nav-item {
-    color: #666;
+  &__contact-icon {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+  }
+
+  &__col-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.3px;
+  }
+
+  &__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__menu-link {
+    color: #cbd5e1;
     text-decoration: none;
-    font-size: 0.8rem;
-    transition: color 0.2s ease;
-    padding: 0.3rem 0.6rem;
-    border-radius: 3px;
+    font-size: 0.95rem;
+    transition: color 0.2s;
 
     &:hover {
-      color: #1a3a6f;
-      background-color: #e8f0fe;
+      color: #ffffff;
+      text-decoration: underline;
+    }
+  }
+
+  &__dev-info {
+    font-size: 0.9rem;
+    margin: 0 0 1rem;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+
+  &__dev-link {
+    display: inline-block;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+
+    &:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+  }
+}
+
+// Мобильная адаптация (менее 768px)
+@media (max-width: 767px) {
+  .footer {
+    padding: 2rem 1rem 1.5rem;
+    font-size: 0.95rem;
+
+    &__row {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    &__col {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    &__logo-text {
+      font-size: 1.35rem;
+    }
+
+    &__desc,
+    &__contact-item,
+    &__menu-link {
+      font-size: 0.9rem;
     }
   }
 }

@@ -21,8 +21,8 @@ export function initTestcreator() {
     if (scrollBtn) {
         scrollBtn.addEventListener('click', () => {
             const header = document.querySelector('.testcreator__header');
-            if (header) header.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            else window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (header) header.scrollIntoView({behavior: 'smooth', block: 'start'});
+            else window.scrollTo({top: 0, behavior: 'smooth'});
         });
     }
 
@@ -32,11 +32,11 @@ export function initTestcreator() {
             questionText: 'Новый вопрос',
             type: 'radio',
             imageUrl: null,
-            options: [{ text: 'Вариант 1', score: 0 }],
+            options: [{text: 'Вариант 1', score: 0}],
         };
     }
 
-    function createOptionElement(option = { text: '', score: 0 }) {
+    function createOptionElement(option = {text: '', score: 0}) {
         const optionDiv = document.createElement('div');
         optionDiv.className = 'testcreator__option-item';
         const textInput = document.createElement('input');
@@ -65,7 +65,7 @@ export function initTestcreator() {
         return optionDiv;
     }
 
-    function buildOptionsArea(type, currentOptions = [{ text: 'Вариант 1', score: 0 }]) {
+    function buildOptionsArea(type, currentOptions = [{text: 'Вариант 1', score: 0}]) {
         const optionsWrapper = document.createElement('div');
         optionsWrapper.className = 'testcreator__options-area';
         if (TYPES_WITH_OPTIONS.includes(type)) {
@@ -80,7 +80,7 @@ export function initTestcreator() {
             addBtn.className = 'testcreator__add-option';
             addBtn.innerHTML = '<i class="fas fa-plus"></i> Добавить вариант';
             addBtn.addEventListener('click', () => {
-                optionsList.appendChild(createOptionElement({ text: 'Новый вариант', score: 0 }));
+                optionsList.appendChild(createOptionElement({text: 'Новый вариант', score: 0}));
             });
             optionsWrapper.appendChild(titleDiv);
             optionsWrapper.appendChild(optionsList);
@@ -173,9 +173,12 @@ export function initTestcreator() {
         card.querySelectorAll('.testcreator__option-item').forEach(item => {
             const textInput = item.querySelector('input[type="text"]');
             const scoreInput = item.querySelector('.testcreator__option-score');
-            if (textInput) options.push({ text: textInput.value, score: scoreInput ? parseFloat(scoreInput.value) || 0 : 0 });
+            if (textInput) options.push({
+                text: textInput.value,
+                score: scoreInput ? parseFloat(scoreInput.value) || 0 : 0
+            });
         });
-        return { questionText, type, imageUrl, options };
+        return {questionText, type, imageUrl, options};
     }
 
     function createQuestionElement(questionData = null) {
@@ -198,11 +201,11 @@ export function initTestcreator() {
         typeDiv.className = 'testcreator__type-select';
         const typeSelect = document.createElement('select');
         const types = [
-            { value: 'radio', label: 'Один выбор (Radio)' },
-            { value: 'checkbox', label: 'Несколько выборов (Чекбоксы)' },
-            { value: 'select', label: 'Выпадающий список' },
-            { value: 'text', label: 'Короткий текст' },
-            { value: 'textarea', label: 'Длинный текст (абзац)' }
+            {value: 'radio', label: 'Один выбор (Radio)'},
+            {value: 'checkbox', label: 'Несколько выборов (Чекбоксы)'},
+            {value: 'select', label: 'Выпадающий список'},
+            {value: 'text', label: 'Короткий текст'},
+            {value: 'textarea', label: 'Длинный текст (абзац)'}
         ];
         types.forEach(t => {
             const opt = document.createElement('option');
@@ -226,10 +229,10 @@ export function initTestcreator() {
         duplicateBtn.title = 'Копировать вопрос';
         duplicateBtn.addEventListener('click', () => {
             const currentData = extractQuestionData(card);
-            const newQuestion = createQuestionElement({ ...currentData, id: Date.now() + questionCounter++ });
+            const newQuestion = createQuestionElement({...currentData, id: Date.now() + questionCounter++});
             card.after(newQuestion);
             updateQuestionCount();
-            newQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            newQuestion.scrollIntoView({behavior: 'smooth', block: 'center'});
         });
         head.appendChild(questionInputDiv);
         head.appendChild(typeDiv);
@@ -240,7 +243,7 @@ export function initTestcreator() {
         body.appendChild(imageBlock);
         let optionsForArea = data.options;
         if (!optionsForArea || optionsForArea.length === 0) {
-            if (TYPES_WITH_OPTIONS.includes(data.type)) optionsForArea = [{ text: 'Вариант 1', score: 0 }];
+            if (TYPES_WITH_OPTIONS.includes(data.type)) optionsForArea = [{text: 'Вариант 1', score: 0}];
             else optionsForArea = [];
         }
         const optionsArea = buildOptionsArea(data.type, optionsForArea);
@@ -255,10 +258,16 @@ export function initTestcreator() {
                 items.forEach(item => {
                     const textInput = item.querySelector('input[type="text"]');
                     const scoreInput = item.querySelector('.testcreator__option-score');
-                    if (textInput) currentOptions.push({ text: textInput.value, score: scoreInput ? parseFloat(scoreInput.value) || 0 : 0 });
+                    if (textInput) currentOptions.push({
+                        text: textInput.value,
+                        score: scoreInput ? parseFloat(scoreInput.value) || 0 : 0
+                    });
                 });
             }
-            if (currentOptions.length === 0 && TYPES_WITH_OPTIONS.includes(newType)) currentOptions = [{ text: 'Вариант 1', score: 0 }];
+            if (currentOptions.length === 0 && TYPES_WITH_OPTIONS.includes(newType)) currentOptions = [{
+                text: 'Вариант 1',
+                score: 0
+            }];
             const oldOptionsArea = card.querySelector('.testcreator__options-area');
             if (oldOptionsArea) oldOptionsArea.replaceWith(buildOptionsArea(newType, currentOptions));
         });
@@ -269,7 +278,7 @@ export function initTestcreator() {
         const newQuestion = createQuestionElement();
         container.appendChild(newQuestion);
         updateQuestionCount();
-        newQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        newQuestion.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 
     function initDemo() {
@@ -278,7 +287,7 @@ export function initTestcreator() {
             questionText: 'Пример вопроса с баллами',
             type: 'radio',
             imageUrl: null,
-            options: [{ text: 'Вариант A', score: 2 }, { text: 'Вариант B', score: 5 }, { text: 'Вариант C', score: 0 }]
+            options: [{text: 'Вариант A', score: 2}, {text: 'Вариант B', score: 5}, {text: 'Вариант C', score: 0}]
         });
         container.appendChild(demoQuestion);
         const textQuestionData = {
@@ -294,7 +303,7 @@ export function initTestcreator() {
             questionText: 'Выберите несколько вариантов (баллы суммируются)',
             type: 'checkbox',
             imageUrl: null,
-            options: [{ text: 'Первый', score: 1 }, { text: 'Второй', score: 2 }, { text: 'Третий', score: 3 }]
+            options: [{text: 'Первый', score: 1}, {text: 'Второй', score: 2}, {text: 'Третий', score: 3}]
         };
         container.appendChild(createQuestionElement(checkboxData));
         updateQuestionCount();
@@ -304,15 +313,28 @@ export function initTestcreator() {
     if (addButtonFooter) addButtonFooter.addEventListener('click', addNewQuestion);
     initDemo();
 
-    // Обработчик сохранения теста (с добавлением инструкции)
+    // Обработчик сохранения теста (добавлены поля анонса)
+    // Обработчик сохранения теста (исправленное получение изображения анонса)
+    // Обработчик сохранения теста (используем FormData для загрузки файла анонса)
+    // Обработчик сохранения теста (используем FormData и правильные заголовки)
     if (createBtn) {
-        createBtn.addEventListener('click', function() {
+        createBtn.addEventListener('click', function () {
             const testName = document.getElementById('testName').value.trim();
             const description = document.getElementById('testDescription').value.trim();
-            const instruction = document.getElementById('testInstruction').value.trim(); // добавлено
+            const instruction = document.getElementById('testInstruction').value.trim();
+            const previewText = document.getElementById('testPreviewText')?.value.trim() || '';
             const categoryId = document.getElementById('categoryId').value;
-            if (!testName) { alert('Введите название теста'); return; }
-            if (!categoryId || categoryId == '0') { alert('Выберите категорию'); return; }
+
+            if (!testName) {
+                alert('Введите название теста');
+                return;
+            }
+            if (!categoryId || categoryId == '0') {
+                alert('Выберите категорию');
+                return;
+            }
+
+            // Собираем вопросы
             const questions = [];
             document.querySelectorAll('.testcreator__question-card').forEach(card => {
                 const qText = card.querySelector('.testcreator__question-input input')?.value || '';
@@ -324,38 +346,58 @@ export function initTestcreator() {
                 card.querySelectorAll('.testcreator__option-item').forEach(opt => {
                     const optText = opt.querySelector('input[type="text"]')?.value || '';
                     const score = parseFloat(opt.querySelector('.testcreator__option-score')?.value) || 0;
-                    if (optText) options.push({ text: optText, score: score });
+                    if (optText) options.push({text: optText, score: score});
                 });
-                questions.push({ text: qText, type: type, image: image, options: options });
+                questions.push({text: qText, type: type, image: image, options: options});
             });
-            if (questions.length === 0) { alert('Добавьте хотя бы один вопрос'); return; }
-            if (typeof BX !== 'undefined' && BX.ajax) {
-                BX.ajax({
-                    url: window.location.href,
-                    method: 'POST',
-                    data: {
-                        action: 'saveTest',
-                        testName: testName,
-                        description: description,
-                        instruction: instruction, // добавлено
-                        categoryId: categoryId,
-                        questionsData: JSON.stringify(questions)
-                    },
-                    onsuccess: function(response) {
-                        let data;
-                        try { data = JSON.parse(response); } catch(e) { data = { success: false, error: 'Ошибка ответа сервера' }; }
-                        if (data.success) {
-                            alert('Тест успешно создан! ID теста: ' + data.testId);
-                            location.reload();
-                        } else {
-                            alert('Ошибка: ' + data.error);
-                        }
-                    },
-                    onfailure: function() { alert('Ошибка соединения'); }
-                });
-            } else {
-                alert('Ошибка: не загружен модуль ajax Битрикс. Добавьте CJSCore::Init(["ajax"]); в шаблон компонента.');
+
+            if (questions.length === 0) {
+                alert('Добавьте хотя бы один вопрос');
+                return;
             }
+
+            // Создаём FormData
+            const formData = new FormData();
+            formData.append('action', 'saveTest');
+            formData.append('testName', testName);
+            formData.append('description', description);
+            formData.append('instruction', instruction);
+            formData.append('previewText', previewText);
+            formData.append('categoryId', categoryId);
+            formData.append('questionsData', JSON.stringify(questions));
+
+            // Файл анонса, если выбран
+            const fileInput = document.getElementById('previewImageFileInput');
+            if (fileInput && fileInput.files.length > 0) {
+                formData.append('previewImage', fileInput.files[0]);
+            }
+
+            // Отправка с явным указанием AJAX-заголовка
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', window.location.href);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); // ← обязательно
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let data;
+                    try {
+                        data = JSON.parse(xhr.responseText);
+                    } catch (e) {
+                        data = {success: false, error: 'Ошибка ответа сервера'};
+                    }
+                    if (data.success) {
+                        alert('Тест успешно создан! ID теста: ' + data.testId);
+                        location.reload();
+                    } else {
+                        alert('Ошибка: ' + data.error);
+                    }
+                } else {
+                    alert('Ошибка соединения: ' + xhr.status);
+                }
+            };
+            xhr.onerror = function () {
+                alert('Ошибка сети');
+            };
+            xhr.send(formData);
         });
     }
 }

@@ -4,7 +4,7 @@ $APPLICATION->SetTitle("Список тестов");
 ?>
 <?$APPLICATION->IncludeComponent(
     "mn:test.list",
-    ".default",
+    "cards",
     [
         "IBLOCK_TESTS_ID" => 6,
         "CATEGORY_ID" => $_REQUEST['CATEGORY_ID'] ?? 0,

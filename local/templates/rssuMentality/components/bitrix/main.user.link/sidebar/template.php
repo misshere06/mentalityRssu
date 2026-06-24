@@ -66,7 +66,7 @@ if (empty($avatarHtml)) {
 }
 
 // Ссылка на профиль
-$profileUrl = SITE_DIR . 'company/personal/user/' . $userId . '/';
+$profileUrl = SITE_DIR . 'profile/';
 $canViewProfile = true;
 
 // Атрибуты для тултипа
@@ -81,10 +81,10 @@ $anchorIdAttr = ' id="anchor_' . $anchor_id . '"';
 $showActions = (isset($arParams['SHOW_ACTIONS']) && $arParams['SHOW_ACTIONS'] === 'Y');
 
 // URL для кнопок
-$messagesUrl = SITE_DIR . 'company/personal/messages/';
-$notificationsUrl = SITE_DIR . 'company/personal/';
+$messagesUrl = "/tests/?filter=completed";
+$notificationsUrl = "/psychology/requests";
 $profileEditUrl = $profileUrl;
-$logoutUrl = SITE_DIR . '?logout=yes';
+$logoutUrl = SITE_DIR . '?logout=yes&' . bitrix_sessid_get();
 ?>
 
 <div class="sidebar__user-info">

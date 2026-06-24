@@ -1,0 +1,155 @@
+// Слайдер на главной странице
+.hero-slider {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid $gray-border;
+
+  &__slides {
+    position: relative;
+    height: 0;
+    padding-bottom: 40%; // пропорции 2.5:1
+    @media (max-width: 768px) {
+      padding-bottom: 60%;
+    }
+  }
+
+  &__slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+
+    &.active {
+      opacity: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  // Кнопки – только на десктопах
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+    z-index: 3;                     // выше, чем подпись и точки
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+    &:hover {
+      background: white;
+    }
+
+    &--prev {
+      left: 1rem;
+    }
+    &--next {
+      right: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      display: none;                // скрываем на мобильных
+    }
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 3;                     // над подписью
+
+    span {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &.active {
+        background: white;
+      }
+    }
+  }
+
+  // Подпись слайда
+  &__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // Градиент от более плотного к прозрачному
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.3) 100%);
+    color: white;
+    padding: 2rem 1.5rem 1.5rem 2rem;
+    z-index: 2;
+    border-left: 4px solid $primary-blue;   // акцентная полоса
+    transition: background 0.3s;
+
+    h2 {
+      margin: 0 0 0.4rem;
+      font-size: 1.75rem;                  // был 1.5rem
+      font-weight: 600;
+      line-height: 1.3;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      letter-spacing: 0.3px;
+      color: aliceblue;
+    }
+    p {
+      margin: 0;
+      font-size: 1.125rem;                 // был 1rem
+      line-height: 1.5;
+      opacity: 0.95;
+      color: aliceblue;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    // Мобильная версия (<768px): убираем наложение, текст под слайдером
+    @media (max-width: 768px) {
+      position: static;
+      background: $bg_color;
+      color: $base_text_gray;
+      padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+      border-left: 4px solid $primary-blue;
+      border-top: none;
+      box-shadow: inset 0 1px 0 $gray-border;
+
+      h2 {
+        font-size: 1.3rem;
+        color: $primary-blue;
+        text-shadow: none;
+      }
+      p {
+        font-size: 1rem;
+        color: $medium-gray;
+        text-shadow: none;
+      }
+    }
+  }
+}
