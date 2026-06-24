@@ -61,11 +61,11 @@ if (empty($avatarHtml)) {
     $avatarHtml = '<img src="/assets/img/avatar.png" alt="" class="burger-user__avatar-img">';
 }
 
-$profileUrl = SITE_DIR . 'company/personal/user/' . $userId . '/';
+$profileUrl = SITE_DIR . 'profile/';
 $showActions = (isset($arParams['SHOW_ACTIONS']) && $arParams['SHOW_ACTIONS'] === 'Y');
 
-$messagesUrl = SITE_DIR . 'company/personal/messages/';
-$notificationsUrl = SITE_DIR . 'company/personal/';
+$messagesUrl = "/tests/?filter=completed";
+$notificationsUrl = "/psychology/requests";
 $profileEditUrl = $profileUrl;
 $logoutUrl = SITE_DIR . '?logout=yes&' . bitrix_sessid_get();
 ?>

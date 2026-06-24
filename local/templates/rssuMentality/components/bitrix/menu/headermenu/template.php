@@ -1,6 +1,8 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 
-<?if (!empty($arResult)):?>
+<?
+global $USER;
+if (!empty($arResult)):?>
     <nav class="header__nav">
         <?
         // Loop through first-level menu items only
@@ -26,6 +28,10 @@
                 $title = "";
                 $disabledAttr = "";
             endif;
+            // Проверяем, нужно ли скрыть пункт для гостей
+            if (!$USER->IsAuthorized() && !empty($arItem["PARAMS"]["HIDE_FOR_GUEST"])) {
+                continue; // пропускаем этот пункт
+            }
             ?>
             <a href="<?=$link?>"
                class="header__nav-item <?=$activeClass?>"

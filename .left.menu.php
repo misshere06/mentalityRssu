@@ -3,22 +3,22 @@ $aMenuLinks = Array(
 	Array(
 		"Студенты", 
 		"/students/", 
-		Array(), 
-		Array(), 
+		Array(),
+        Array("HIDE_FOR_GUEST" => "Y"),
 		"" 
 	),
 	Array(
 		"Психологи", 
 		"/psychology/", 
-		Array(), 
-		Array(), 
+		Array(),
+        Array("HIDE_FOR_GUEST" => "Y"),
 		"" 
 	),
 	Array(
 		"Аналитика", 
 		"/analitics/", 
-		Array(), 
-		Array(), 
+		Array(),
+        Array("HIDE_FOR_GUEST" => "Y"),
 		"" 
 	)
 );

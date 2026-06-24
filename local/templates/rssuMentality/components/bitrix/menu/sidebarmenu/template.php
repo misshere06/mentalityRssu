@@ -1,6 +1,7 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();?>
 
-<?if (!empty($arResult)):?>
+<? global $USER;
+if (!empty($arResult)):?>
     <div class="sidebar__menu">
         <?
         // Проходим только по пунктам первого уровня (корневое меню)
@@ -25,6 +26,10 @@
                 $title = "";
                 $disabledAttr = "";
             endif;
+            // Проверяем, нужно ли скрыть пункт для гостей
+            if (!$USER->IsAuthorized() && !empty($arItem["PARAMS"]["HIDE_FOR_GUEST"])) {
+                continue; // пропускаем этот пункт
+            }
             ?>
             <a href="<?=$link?>"
                class="sidebar__menu-item <?=$activeClass?>"
